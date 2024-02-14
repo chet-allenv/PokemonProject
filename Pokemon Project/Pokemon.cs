@@ -1,7 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Runtime.ConstrainedExecution;
-
+﻿
 namespace PokemonProject {
 
     class Pokemon {
@@ -46,7 +43,7 @@ namespace PokemonProject {
 
         public void DisplayStats() {
 
-            Console.WriteLine($"Pokemon: {this.name}\nType: {this.type.name}\nHP: {this.health}\nAttack: {this.attack}\nDefence: {this.defence}\nSpecial: {this.special}\nSpeed: {this.speed}");
+            Console.WriteLine($"Pokemon: {this.name}\nType: {this.type}\nHP: {this.health}\nAttack: {this.attack}\nDefence: {this.defence}\nSpecial: {this.special}\nSpeed: {this.speed}");
         }
 
         public int GenerateStat() {
@@ -101,4 +98,20 @@ namespace PokemonProject {
         }
     }
     
+    class Healymon : Pokemon {
+
+        Attack[] moveSet;
+        public Healymon() : base("Healymon", "Normal") { moveSet = [new TackleAttack(), new HealMove()]; }
+        public Healymon(int level) : base("Healymon", "Normal", level) { moveSet = [new TackleAttack(), new HealMove()]; }
+
+        public override void Attack(Pokemon target) {
+
+            int num = rng.Next(0, moveSet.Length);
+
+            if (moveSet[num].name.Equals("Heal")) {
+                moveSet[num].Use(this, this);
+            }
+            else { moveSet[num].Use(this, target); }
+        }
+    }
 }

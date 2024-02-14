@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 
 namespace PokemonProject {
 
@@ -50,15 +49,17 @@ namespace PokemonProject {
         public static void Main(string[] args) {
 
             Game g = new(); Random r = new();
-            int p1Num = r.Next(0,3); int p2Num = r.Next(0,3);
+            int p1Num = r.Next(0,4); int p2Num = r.Next(0,4);
             Pokemon p1; Pokemon p2;
 
             if (p1Num == 0) { p1 = new Charmander(); }
             else if (p1Num == 1) { p1 = new Squirtle(); }
+            else if (p1Num == 2) { p1 = new Healymon(); }
             else { p1 = new Bulbasaur(); }
 
             if (p2Num == 0) { p2 = new Charmander(); }
             else if (p2Num == 1) { p2 = new Squirtle(); }
+            else if (p2Num == 2) { p2 = new Healymon(); }
             else { p2 = new Bulbasaur(); }
 
             g.RunGame(p1,p2);
