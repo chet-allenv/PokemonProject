@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
 
 namespace PokemonProject {
 
@@ -11,6 +12,7 @@ namespace PokemonProject {
         public int special;
         public int speed;
         public int health;
+        public readonly int originalHealth;
         public int level;
         public PokemonType type;
 
@@ -24,6 +26,7 @@ namespace PokemonProject {
             this.special = GenerateStat();
             this.speed = GenerateStat();
             this.health = GenerateStat();
+            this.originalHealth = health;
             this.type = type;
             this.level = level;
         }
@@ -36,6 +39,7 @@ namespace PokemonProject {
             this.special = GenerateStat();
             this.speed = GenerateStat();
             this.health = GenerateStat();
+            this.originalHealth = health;
             this.type = type;
             this.level = 5;
         }
@@ -50,33 +54,51 @@ namespace PokemonProject {
             return rng.Next(10, 25) + 1 * (2 * level / 5 + 2);
         }
 
-        public static void Main(string[] args) {
+        public bool IsAlive() { return health >= 0; }
 
-            PokemonType pt = new();
-            pt.InitializeTypeMatchups();
+        public virtual void Attack(Pokemon target) { Console.WriteLine("ATTACK IS USED"); }
 
-            BubbleAttack bubble = new();
-
-            Charmander c = new();
-            Squirtle s = new();
-
-            c.DisplayStats();
-            s.DisplayStats();
-
-            bubble.Use(s, c);
-
-            c.DisplayStats();
-            s.DisplayStats();            
-        }
     }
     class Charmander : Pokemon {
-        public Charmander() : base("Charmander", new FireType()) {}
-        public Charmander(int level) : base("Charmander", new FireType(), level) {}
+
+        Attack[] moveSet;
+        public Charmander() : base("Charmander", new FireType()) { moveSet = [new TackleAttack(), new EmberAttack()]; }
+        public Charmander(int level) : base("Charmander", new FireType(), level) { moveSet = [new TackleAttack(), new EmberAttack()]; }
+
+        public override void Attack(Pokemon target) {
+
+            int num = rng.Next(0, moveSet.Length);
+
+            moveSet[num].Use(this, target);
+        }
     }
 
     class Squirtle : Pokemon {
-        public Squirtle() : base("Squirtle", new WaterType()) {}
-        public Squirtle(int level) : base("Squirtle", new FireType(), level) {}
+
+        Attack[] moveSet;
+        public Squirtle() : base("Squirtle", new WaterType()) { moveSet = [new TackleAttack(), new BubbleAttack()]; }
+        public Squirtle(int level) : base("Squirtle", new FireType(), level) { moveSet = [new TackleAttack(), new BubbleAttack()]; }
+
+        public override void Attack(Pokemon target) {
+
+            int num = rng.Next(0, moveSet.Length);
+
+            moveSet[num].Use(this, target);
+        }
+    }
+
+    class Bulbasaur : Pokemon {
+
+        Attack[] moveSet;
+        public Bulbasaur() : base("Bulbasaur" , new GrassType()) { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
+        public Bulbasaur(int level) : base("Bulbasaur", new GrassType(), level) { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
+
+        public override void Attack(Pokemon target) {
+
+            int num = rng.Next(0, moveSet.Length);
+
+            moveSet[num].Use(this, target);
+        }
     }
     
 }
