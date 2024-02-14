@@ -1,0 +1,14 @@
+c:\Users\cheta\myFolder\C#\Pokemon Project\bin\Debug\net8.0\Pokemon Project.exe
+c:\Users\cheta\myFolder\C#\Pokemon Project\bin\Debug\net8.0\Pokemon Project.deps.json
+c:\Users\cheta\myFolder\C#\Pokemon Project\bin\Debug\net8.0\Pokemon Project.runtimeconfig.json
+c:\Users\cheta\myFolder\C#\Pokemon Project\bin\Debug\net8.0\Pokemon Project.dll
+c:\Users\cheta\myFolder\C#\Pokemon Project\bin\Debug\net8.0\Pokemon Project.pdb
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\Pokemon Project.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\Pokemon Project.AssemblyInfoInputs.cache
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\Pokemon Project.AssemblyInfo.cs
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\Pokemon Project.csproj.CoreCompileInputs.cache
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\Pokemon Project.dll
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\refint\Pokemon Project.dll
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\Pokemon Project.pdb
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\Pokemon Project.genruntimeconfig.cache
+c:\Users\cheta\myFolder\C#\Pokemon Project\obj\Debug\net8.0\ref\Pokemon Project.dll
