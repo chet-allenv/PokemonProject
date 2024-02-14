@@ -4,10 +4,10 @@ using System.Security.Cryptography;
 
 namespace PokemonProject {
 
-    class Attack {
+    class Attack { 
 
         public int power;
-        public int accuracy;
+        public int accuracy; 
 
         public string name;
 
@@ -105,6 +105,7 @@ namespace PokemonProject {
                 int damage = CalculateDamage(user, target, STAB, typeEffectiveness);
 
                 target.health -= damage;
+                
 
             }
 
