@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj": {}
   },
   "projects": {
@@ -12,16 +13,27 @@
         "projectPath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
         "packagesPath": "C:\\Users\\cheta\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\obj\\",
+=======
+    "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj": {}
+  },
+  "projects": {
+    "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+        "projectName": "Pokemon Project",
+        "projectPath": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+        "packagesPath": "C:\\Users\\cheta\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\obj\\",
+>>>>>>> afe1fe1b95cb2d74c4edd2ce33dbf00e6cea61a3
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\cheta\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\cheta\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

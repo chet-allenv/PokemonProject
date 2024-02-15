@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 
 namespace PokemonProject {
 
@@ -30,26 +29,6 @@ namespace PokemonProject {
                 strengthDict.Add("Normal", []);
             }
         }
-    }
-
-    class FireType : PokemonType {
-
-        public FireType() { this.name = "Fire"; }
-    }
-
-    class WaterType : PokemonType {
-
-        public WaterType() { this.name = "Water"; }
-    }
-
-    class GrassType : PokemonType {
-
-        public GrassType() { this.name = "Grass"; }
-    }
-
-    class NormalType : PokemonType {
-
-        public NormalType() { this.name = "Normal"; }
     }
     
 }

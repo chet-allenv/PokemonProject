@@ -1,7 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Runtime.ConstrainedExecution;
-
+﻿
 namespace PokemonProject {
 
     class Pokemon {
@@ -14,11 +11,11 @@ namespace PokemonProject {
         public int health;
         public readonly int originalHealth;
         public int level;
-        public PokemonType type;
+        public string type;
 
         public readonly Random rng = new();
 
-        public Pokemon(string name, PokemonType type, int level) {
+        public Pokemon(string name, string type, int level) {
 
             this.name = name;
             this.attack = GenerateStat();
@@ -31,7 +28,7 @@ namespace PokemonProject {
             this.level = level;
         }
 
-        public Pokemon(string name, PokemonType type) {
+        public Pokemon(string name, string type) {
 
             this.name = name;
             this.attack = GenerateStat();
@@ -46,7 +43,7 @@ namespace PokemonProject {
 
         public void DisplayStats() {
 
-            Console.WriteLine($"Pokemon: {this.name}\nType: {this.type.name}\nHP: {this.health}\nAttack: {this.attack}\nDefence: {this.defence}\nSpecial: {this.special}\nSpeed: {this.speed}");
+            Console.WriteLine($"Pokemon: {this.name}\nType: {this.type}\nHP: {this.health}\nAttack: {this.attack}\nDefence: {this.defence}\nSpecial: {this.special}\nSpeed: {this.speed}");
         }
 
         public int GenerateStat() {
@@ -62,8 +59,8 @@ namespace PokemonProject {
     class Charmander : Pokemon {
 
         Attack[] moveSet;
-        public Charmander() : base("Charmander", new FireType()) { moveSet = [new TackleAttack(), new EmberAttack()]; }
-        public Charmander(int level) : base("Charmander", new FireType(), level) { moveSet = [new TackleAttack(), new EmberAttack()]; }
+        public Charmander() : base("Charmander", "Fire") { moveSet = [new TackleAttack(), new EmberAttack()]; }
+        public Charmander(int level) : base("Charmander", "Fire", level) { moveSet = [new TackleAttack(), new EmberAttack()]; }
 
         public override void Attack(Pokemon target) {
 
@@ -76,8 +73,8 @@ namespace PokemonProject {
     class Squirtle : Pokemon {
 
         Attack[] moveSet;
-        public Squirtle() : base("Squirtle", new WaterType()) { moveSet = [new TackleAttack(), new BubbleAttack()]; }
-        public Squirtle(int level) : base("Squirtle", new FireType(), level) { moveSet = [new TackleAttack(), new BubbleAttack()]; }
+        public Squirtle() : base("Squirtle", "Water") { moveSet = [new TackleAttack(), new BubbleAttack()]; }
+        public Squirtle(int level) : base("Squirtle", "Water", level) { moveSet = [new TackleAttack(), new BubbleAttack()]; }
 
         public override void Attack(Pokemon target) {
 
@@ -90,8 +87,8 @@ namespace PokemonProject {
     class Bulbasaur : Pokemon {
 
         Attack[] moveSet;
-        public Bulbasaur() : base("Bulbasaur" , new GrassType()) { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
-        public Bulbasaur(int level) : base("Bulbasaur", new GrassType(), level) { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
+        public Bulbasaur() : base("Bulbasaur" , "Grass") { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
+        public Bulbasaur(int level) : base("Bulbasaur", "Grass", level) { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
 
         public override void Attack(Pokemon target) {
 
@@ -101,4 +98,20 @@ namespace PokemonProject {
         }
     }
     
+    class Healymon : Pokemon {
+
+        Attack[] moveSet;
+        public Healymon() : base("Healymon", "Normal") { moveSet = [new TackleAttack(), new HealMove()]; }
+        public Healymon(int level) : base("Healymon", "Normal", level) { moveSet = [new TackleAttack(), new HealMove()]; }
+
+        public override void Attack(Pokemon target) {
+
+            int num = rng.Next(0, moveSet.Length);
+
+            if (moveSet[num].name.Equals("Heal")) {
+                moveSet[num].Use(this, this);
+            }
+            else { moveSet[num].Use(this, target); }
+        }
+    }
 }
