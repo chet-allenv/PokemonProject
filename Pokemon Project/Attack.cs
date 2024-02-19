@@ -10,26 +10,45 @@ namespace PokemonProject {
         public int accuracy; 
 
         public string name;
+        public string moveType;
 
         public readonly PokemonType pt = new();
         
-        public Attack(int power, int accuracy, string name) {
+        public Attack(int power, int accuracy, string name, string moveType) {
             this.power = power;
             this.accuracy = accuracy;
             this.name = name;
+            this.moveType = moveType;
 
             pt.InitializeTypeMatchups();
         }
         
         public virtual void Use(Pokemon user, Pokemon target) { Console.WriteLine("Attack used"); }
+        public virtual void Use(Pokemon user) { Console.WriteLine("Attack Used"); }
+
+        public double CalculateTypeEffectiveness(Pokemon target) {
+
+            pt.strengthDict.TryGetValue(target.type, out List<string>? targetStrengths);
+            pt.weaknessDict.TryGetValue(target.type, out List<string>? targetWeaknesses);
+
+            targetStrengths ??= [];
+            targetWeaknesses ??= [];
+
+            double effectiveness = 1.0;
+
+            if (targetStrengths.Contains(moveType) || target.type.Equals(moveType)) { effectiveness = 0.5; Console.WriteLine("It's not very effective"); }
+            else if (targetWeaknesses.Contains(moveType)) { effectiveness = 2.0; Console.WriteLine("It's super effective!"); }
+            
+            return effectiveness;
+        }
+
     }
 
     class PhysicalAttack : Attack{
 
         public string attackType = "physical";
-        public string moveType;
 
-        public PhysicalAttack(int power, int accuracy, string type, string name) : base(power, accuracy, name) { this.moveType = type; } 
+        public PhysicalAttack(int power, int accuracy, string type, string name) : base(power, accuracy, name, type) {}
         public readonly Random rng = new();
 
         
@@ -65,31 +84,16 @@ namespace PokemonProject {
             return damage;
         }
 
-        public double CalculateTypeEffectiveness(Pokemon target) {
-
-            pt.strengthDict.TryGetValue(target.type, out List<string>? targetStrengths);
-            pt.weaknessDict.TryGetValue(target.type, out List<string>? targetWeaknesses);
-
-            targetStrengths ??= [];
-            targetWeaknesses ??= [];
-
-            double effectiveness = 1.0;
-
-            if (targetStrengths.Contains(moveType) || target.type.Equals(moveType)) { effectiveness = 0.5; Console.WriteLine("It's not very effective"); }
-            else if (targetWeaknesses.Contains(moveType)) { effectiveness = 2.0; Console.WriteLine("It's super effective!"); }
-            
-            return effectiveness;
-        }
+        
     }
 
     class SpecialAttack : Attack {
 
         public string attackType = "special";
-        public string moveType;
 
         public readonly Random rng = new();
 
-        public SpecialAttack(int power, int accuracy, string type, string name) : base(power, accuracy, name) { this.moveType = type; }
+        public SpecialAttack(int power, int accuracy, string type, string name) : base(power, accuracy, name, type) {}
 
         public override void Use(Pokemon user, Pokemon target) {
             
@@ -122,22 +126,6 @@ namespace PokemonProject {
             int damage = (int) d;
 
             return damage;
-        }
-
-        public double CalculateTypeEffectiveness(Pokemon target) {
-
-            pt.strengthDict.TryGetValue(target.type, out List<string>? targetStrengths);
-            pt.weaknessDict.TryGetValue(target.type, out List<string>? targetWeaknesses);
-
-            targetStrengths ??= [];
-            targetWeaknesses ??= [];
-
-            double effectiveness = 1.0;
-
-            if (targetStrengths.Contains(moveType) || target.type.Equals(moveType)) { effectiveness = 0.5; Console.WriteLine("It's not very effective"); }
-            else if (targetWeaknesses.Contains(moveType)) { effectiveness = 2.0; Console.WriteLine("It's super effective!"); }
-            
-            return effectiveness;
         }
     }
 
