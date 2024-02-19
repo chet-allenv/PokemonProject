@@ -1,25 +1,17 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-    "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj": {}
-=======
     "C:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj": {}
->>>>>>> 2657e5411b4e62ce3bfd573906df6c2f40368807
   },
   "projects": {
-    "C:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj": {
+    "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+        "projectUniqueName": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
         "projectName": "Pokemon Project",
-        "projectPath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+        "projectPath": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
         "packagesPath": "C:\\Users\\cheta\\.nuget\\packages\\",
-<<<<<<< HEAD
-        "outputPath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\obj\\",
-=======
         "outputPath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\obj\\",
->>>>>>> 2657e5411b4e62ce3bfd573906df6c2f40368807
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\cheta\\AppData\\Roaming\\NuGet\\NuGet.Config",

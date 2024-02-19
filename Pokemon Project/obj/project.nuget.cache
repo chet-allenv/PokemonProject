@@ -1,6 +1,11 @@
 {
   "version": 2,
 <<<<<<< HEAD
+  "dgSpecHash": "vsEZG8oiuxrThbI/A8KBPUzGt+bireCL3x+CDYqJbL0RTDuKhOvpBLlYaWr1XsMOVF+yJmaRNhHbG6mtbvSgfQ==",
+  "success": true,
+  "projectFilePath": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+=======
+<<<<<<< HEAD
   "dgSpecHash": "BHkMTboMCUKI7hsDqp25aqq9sE/yM0Lw+TD3j+IDHHIAbw+VOjhVqgZTH2Iil2OKVSRndA4W2zlK7FD3x8SKtg==",
   "success": true,
   "projectFilePath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
@@ -9,6 +14,7 @@
   "success": true,
   "projectFilePath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
 >>>>>>> 2657e5411b4e62ce3bfd573906df6c2f40368807
+>>>>>>> 4adc13a9eb8f441b4ef2b7ab0fb7081b7666b3e3
   "expectedPackageFiles": [],
   "logs": [
     {
