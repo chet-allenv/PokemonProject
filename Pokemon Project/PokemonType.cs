@@ -19,7 +19,8 @@ namespace PokemonProject {
                 weaknessDict.Add("Fire", ["Water"]);
                 weaknessDict.Add("Water", ["Grass"]);
                 weaknessDict.Add("Grass", ["Fire"]);
-                weaknessDict.Add("Normal", []);
+                weaknessDict.Add("Normal", ["Fighting"]);
+                weaknessDict.Add("Fighting", []);
             }
             
             if (strengthDict.Count == 0) {
@@ -27,6 +28,7 @@ namespace PokemonProject {
                 strengthDict.Add("Water", ["Fire"]);
                 strengthDict.Add("Grass", ["Water"]);
                 strengthDict.Add("Normal", []);
+                strengthDict.Add("Fighting", ["Normal"]);
             }
         }
     }

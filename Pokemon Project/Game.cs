@@ -3,6 +3,13 @@ namespace PokemonProject {
 
     class Game {
 
+        public readonly string battleSceneFile = "BattleScene.txt";
+        public string[] battleSceneStringLines;
+        public Game() {
+
+            battleSceneStringLines = File.ReadAllLines(battleSceneFile);
+        }
+
         public void RunGame(Pokemon p1, Pokemon p2) {
 
             int turnNum = 0;
@@ -44,6 +51,66 @@ namespace PokemonProject {
                 return new string('O', numO) + new string('X', numX);
             }
             else { return "XXXXXXXXXX"; }
+        }
+
+        public void DisplayBattleScreen(Pokemon user, Pokemon enemy) {
+
+            for (int i = 0; i < battleSceneStringLines.Length; i++) {
+
+                string line = battleSceneStringLines[i];
+                bool lineModified = false;
+
+                if (line.Contains("{enemy.name}")) {
+
+                    string spaces = "";
+
+                    if (enemy.name.Length < 10) {
+                        for (int j = 0; j < 10 - enemy.name.Length; j++) {
+                            spaces += " ";
+                        }
+                    }
+                    battleSceneStringLines[i] = line.Replace("{enemy.name}", enemy.name + spaces);
+                    lineModified = true;
+                }
+
+                if (line.Contains("{Game.GetHealthBar(enemy)}")) {
+
+                    battleSceneStringLines[i] = line.Replace("{Game.GetHealthBar(enemy)}", this.GetHealthBar(enemy));
+                    lineModified = true;
+                }
+
+                if (line.Contains("{user.name}")) {
+
+                    string spaces = "";
+
+                    if (user.name.Length < 10) {
+                        for (int j = 0; j < 10 - user.name.Length; j++) {
+                            spaces += " ";
+                        }
+                    }
+                    battleSceneStringLines[i] = line.Replace("{user.name}", user.name + spaces);
+                    lineModified = true;
+                }
+                
+                if (line.Contains("{user.health}")) {
+
+                    string spaces = "";
+                    string healthToString = user.health.ToString();
+
+                    if (healthToString.Length < 4) {
+                        for (int j = 0; j < 4 - healthToString.Length; j++) {
+                            spaces += " ";
+                        }
+                    }
+                    battleSceneStringLines[i] = line.Replace("{user.health}", healthToString + spaces);
+                    battleSceneStringLines[i] = battleSceneStringLines[i].Replace("{Game.GetHealthBar(user)}", this.GetHealthBar(enemy));
+                    lineModified = true;
+
+                }
+
+                if (!lineModified) { Console.WriteLine(line); }
+                else { Console.WriteLine( battleSceneStringLines[i]); }
+            }
         }
 
         public static void Main(string[] args) {
