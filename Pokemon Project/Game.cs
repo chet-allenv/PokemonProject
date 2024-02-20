@@ -4,10 +4,19 @@ namespace PokemonProject {
     class Game {
 
         public readonly string battleSceneFile = "BattleScene.txt";
+        public readonly string menuBoxFile = "MenuBox.txt";
+        public readonly string attackBoxFile = "AttackBox.txt";
+        public readonly string messageBoxFile = "MessageBox.txt";
         public string[] battleSceneStringLines;
+        public string[] menuBoxLines;
+        public string[] attackBoxLines;
+        public string[] messageBoxLines;
         public Game() {
 
             battleSceneStringLines = File.ReadAllLines(battleSceneFile);
+            menuBoxLines = File.ReadAllLines(menuBoxFile);
+            attackBoxLines = File.ReadAllLines(attackBoxFile);
+            messageBoxLines = File.ReadAllLines(messageBoxFile);
         }
 
         public void RunGame(Pokemon p1, Pokemon p2) {
@@ -53,7 +62,96 @@ namespace PokemonProject {
             else { return "XXXXXXXXXX"; }
         }
 
-        public void DisplayBattleScreen(Pokemon user, Pokemon enemy) {
+        public void DisplayMenuBox() {
+
+            foreach ( string line in menuBoxLines) {
+
+                Console.WriteLine(line);
+            }
+        }
+
+        public void DisplayAttackBox(Pokemon pokemon) {
+
+            for (int i = 0; i < attackBoxLines.Length; i++) {
+
+                string line = attackBoxLines[i];
+                bool lineModified = false;
+
+                if (line.Contains("{attackNumber1}")) {
+                    
+                    string spaces1 = "";
+                    string spaces2 = "";
+
+                    if (pokemon.moveSet[0].name.Length < 15) {
+                        for (int j = 0; j < 15 - pokemon.moveSet[0].name.Length; j++) { spaces1 += " "; }
+                    }
+
+                    if (pokemon.moveSet[1].name.Length < 15) {
+                        for (int j = 0; j < 15 - pokemon.moveSet[1].name.Length; j++) { spaces2 += " "; }
+                    }
+
+                    attackBoxLines[i] = line.Replace("{attackNumber1}", pokemon.moveSet[0].name + spaces1);
+                    attackBoxLines[i] = attackBoxLines[i].Replace("{attackNumber2}", pokemon.moveSet[1].name + spaces2);
+                    lineModified = true;
+                }
+
+                if (!lineModified) { Console.WriteLine(line); }
+                else { Console.WriteLine(attackBoxLines[i]); }
+            }
+        }
+
+        public void DisplayMessageBox(string? attackMessage, string? effectivenessMessage) {
+
+            for (int i = 0; i < messageBoxLines.Length; i++ ) {
+
+                string line = messageBoxLines[i];
+                bool lineModified = false;
+
+                if (line.Contains("{moveBeingUsedMessage}")) {
+
+                    string spaces = "";
+
+                    if (attackMessage == null) {
+                        messageBoxLines[i] = line.Replace("{moveBeingUsedMessage}", "                                           ");
+                        lineModified = true;
+                    }
+                    else {
+                        if (attackMessage.Length < 43) {
+                            for (int j = 0; j < 43 - attackMessage.Length; j++) { spaces += " "; }
+                        }
+                        else if (attackMessage.Length > 43) { attackMessage = "ATTACK MESSAGE IS TOO LONG.                 "; }
+
+                        messageBoxLines[i] = line.Replace("{moveBeingUsedMessage}", attackMessage + spaces);
+                        lineModified = true;
+                    }
+                }
+
+                else if (line.Contains("{effectivenessMessage}")) {
+
+                    string spaces = "";
+
+                    if (effectivenessMessage == null) {
+                        messageBoxLines[i] = line.Replace("{effectivenessMessage}", "                                           ");
+                        lineModified = true;
+                    }
+                    else {
+                        if (effectivenessMessage.Length < 43) {
+                            for (int j = 0; j < 43 - effectivenessMessage.Length; j++) { spaces += " "; }
+                        }
+                        else if (effectivenessMessage.Length > 43) { effectivenessMessage = "EFFECTIVENESS MESSAGE IS TOO LONG.           "; }
+
+                        messageBoxLines[i] = line.Replace("{effectivenessMessage}", effectivenessMessage + spaces);
+                        lineModified = true;
+                    }
+                }
+
+
+                if (!lineModified) { Console.WriteLine(line); }
+                else { Console.WriteLine(messageBoxLines[i]); }
+            }
+        }
+
+        public void DisplayBattleScreen(Pokemon user, Pokemon enemy, int menuCase, Attack? usedMove = null) {
 
             for (int i = 0; i < battleSceneStringLines.Length; i++) {
 
@@ -110,6 +208,25 @@ namespace PokemonProject {
 
                 if (!lineModified) { Console.WriteLine(line); }
                 else { Console.WriteLine( battleSceneStringLines[i]); }
+
+                
+            }
+
+            if (menuCase == 0) { DisplayMenuBox(); }
+            else if (menuCase == 1) { DisplayAttackBox(user); }
+            else if (menuCase == 2 && usedMove != null) { 
+
+                if (usedMove.name.Equals("Heal")) {
+                    string attackMessage = usedMove.Use(user);
+                    DisplayMessageBox(attackMessage, "                                           ");
+                }
+                else {
+                    string? attackMessage = usedMove.Use(user, enemy).attackMessage;
+                    string? effectivenessMessage = usedMove.Use(user, enemy).effectivenessMessage;
+
+                    DisplayMessageBox(attackMessage, effectivenessMessage);
+                }
+               
             }
         }
 
@@ -128,8 +245,9 @@ namespace PokemonProject {
             else if (p2Num == 1) { p2 = new Squirtle(); }
             else if (p2Num == 2) { p2 = new Healymon(); }
             else { p2 = new Bulbasaur(); }
+            
 
-            g.DisplayBattleScreen(p1,p2);
+            g.DisplayBattleScreen(p1,p2, 2, p1.moveSet[1]);
         }
     }
 }

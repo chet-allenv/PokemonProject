@@ -1,0 +1,6 @@
+---------------------------------------------
+|Enter the number of attack you want to use |
+|                                           |
+|  [1]{attackNumber1}   [2]{attackNumber2}  |
+|                                           |
+---------------------------------------------

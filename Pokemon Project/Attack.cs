@@ -1,10 +1,10 @@
 
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
-
 namespace PokemonProject {
 
     class Attack { 
+
+        public string? attackMessage;
+        public string? effectivenessMessage;
 
         public int power;
         public int accuracy; 
@@ -23,10 +23,10 @@ namespace PokemonProject {
             pt.InitializeTypeMatchups();
         }
         
-        public virtual void Use(Pokemon user, Pokemon target) { Console.WriteLine("Attack used"); }
-        public virtual void Use(Pokemon user) { Console.WriteLine("Attack Used"); }
+        public virtual (string? attackMessage, string? effectivenessMessage) Use(Pokemon user, Pokemon target) { return ("Attack used", null); }
+        public virtual string Use(Pokemon user) { return "Attack Used"; }
 
-        public double CalculateTypeEffectiveness(Pokemon target) {
+        public (double effectiveness, string? effectivenessMessage) CalculateTypeEffectiveness(Pokemon target) {
 
             pt.strengthDict.TryGetValue(target.type, out List<string>? targetStrengths);
             pt.weaknessDict.TryGetValue(target.type, out List<string>? targetWeaknesses);
@@ -36,10 +36,10 @@ namespace PokemonProject {
 
             double effectiveness = 1.0;
 
-            if (targetStrengths.Contains(moveType) || target.type.Equals(moveType)) { effectiveness = 0.5; Console.WriteLine("It's not very effective"); }
-            else if (targetWeaknesses.Contains(moveType)) { effectiveness = 2.0; Console.WriteLine("It's super effective!"); }
+            if (targetStrengths.Contains(moveType) || target.type.Equals(moveType)) { effectiveness = 0.5; effectivenessMessage = "It's not very effective"; }
+            else if (targetWeaknesses.Contains(moveType)) { effectiveness = 2.0; effectivenessMessage = "It's super effective!"; }
             
-            return effectiveness;
+            return (effectiveness, effectivenessMessage);
         }
 
     }
@@ -52,16 +52,17 @@ namespace PokemonProject {
         public readonly Random rng = new();
 
         
-        public override void Use(Pokemon user, Pokemon target) {
+        public override (string? attackMessage, string? effectivenessMessage) Use(Pokemon user, Pokemon target) {
             
             int testAccuracy = rng.Next(0, 101);
 
-            Console.WriteLine($"{user.name} used {this.name}!");
+            attackMessage = $"{user.name} used {this.name}!";
 
             if (testAccuracy <= accuracy) {
 
                 double STAB = moveType.Equals(user.type) ? 1.5 : 1.0;
-                double typeEffectiveness = CalculateTypeEffectiveness(target);
+                double typeEffectiveness = CalculateTypeEffectiveness(target).effectiveness;
+                effectivenessMessage = CalculateTypeEffectiveness(target).effectivenessMessage;
 
                 int damage = CalculateDamage(user, target, STAB, typeEffectiveness);
 
@@ -70,8 +71,10 @@ namespace PokemonProject {
             }
 
             else {
-                Console.WriteLine("Attack Missed.");
+                effectivenessMessage = "Attack missed";
             }
+
+            return (attackMessage, effectivenessMessage);
         }
 
         public int CalculateDamage(Pokemon user, Pokemon target, double STAB, double typeEffectiveness) {
@@ -95,16 +98,17 @@ namespace PokemonProject {
 
         public SpecialAttack(int power, int accuracy, string type, string name) : base(power, accuracy, name, type) {}
 
-        public override void Use(Pokemon user, Pokemon target) {
+        public override (string? attackMessage, string? effectivenessMessage) Use(Pokemon user, Pokemon target) {
             
             int testAccuracy = rng.Next(0, 101);
 
-            Console.WriteLine($"{user.name} used {this.name}!");
+            attackMessage = $"{user.name} used {this.name}!";
 
             if (testAccuracy <= accuracy) {
 
                 double STAB = moveType.Equals(user.type) ? 1.5 : 1.0;
-                double typeEffectiveness = CalculateTypeEffectiveness(target);
+                double typeEffectiveness = CalculateTypeEffectiveness(target).effectiveness;
+                effectivenessMessage = CalculateTypeEffectiveness(target).effectivenessMessage;
 
                 int damage = CalculateDamage(user, target, STAB, typeEffectiveness);
 
@@ -114,8 +118,10 @@ namespace PokemonProject {
             }
 
             else {
-                Console.WriteLine("Attack Missed.");
+                effectivenessMessage = "Attack missed";
             }
+
+            return (attackMessage, effectivenessMessage);
         }
 
         public int CalculateDamage(Pokemon user, Pokemon target, double STAB, double typeEffectiveness) {
@@ -157,14 +163,16 @@ namespace PokemonProject {
 
         public HealMove() : base(25, 100, "Normal", "Heal") {}
 
-        public override void Use(Pokemon user, Pokemon user2)
+        public override string Use(Pokemon user)
         {
-            Console.WriteLine($"{user.name} healed themself.");
+            attackMessage = $"{user.name} healed themself.";
 
             int damage = this.CalculateDamage(user);
 
             if (user.health + damage > user.originalHealth) { user.health = user.originalHealth; }
             else { user.health += damage; }
+
+            return attackMessage;
         }
 
         public int CalculateDamage(Pokemon user) {
