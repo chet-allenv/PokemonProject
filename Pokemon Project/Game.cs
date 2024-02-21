@@ -19,29 +19,87 @@ namespace PokemonProject {
             messageBoxLines = File.ReadAllLines(messageBoxFile);
         }
 
-        public void RunGame(Pokemon p1, Pokemon p2) {
+        static void ClearConsole() 
+        {
+            Console.Clear();
+        }
+
+        static void Sleep(int sleepTime) {
+            
+        }
+
+        public void RunGame() {
 
             int turnNum = 0;
-            DisplayHealth(p1,p2);
+            
+            Pokemon p1;
+            Pokemon p2;
 
-            while (p1.IsAlive() && p2.IsAlive()) {
+            Random rng = new();
+            int p2Num = rng.Next(0,4);
 
-                turnNum++;
+            if (p2Num == 0) { p2 = new Charmander(); }
+            else if (p2Num == 1) { p2 = new Squirtle(); }
+            else if (p2Num == 2) { p2 = new Healymon(); }
+            else { p2 = new Bulbasaur(); }
+            
+            int starterChoiceInt;
+            while(true) {
+                Console.WriteLine("Enter the number of the Pokemon you would like to use!\n1) Bulbasaur\n2) Charmander\n3) Squirtle\n4) Healymon");
+                string? starterChoiceString = Console.ReadLine();
 
-                Pokemon first;
-                Pokemon second;
+                try {
 
-                if (p1.speed >= p2.speed) { first = p1; second = p2; }
-                else { first = p2; second = p1; }
-
-                first.Attack(second);
-                DisplayHealth(p1,p2);
-                if (!second.IsAlive()) { Console.WriteLine($"{second.name} fainted. {first.name} wins the battle"); break;}
-
-                second.Attack(first);
-                DisplayHealth(p1,p2);
-                if (!first.IsAlive()) { Console.WriteLine($"{first.name} fainted. {second.name} wins the battle"); }
+                    starterChoiceInt = Int32.Parse(starterChoiceString);
+                    break;
+                }
+                catch {
+                    
+                    Console.WriteLine("Please enter a number 1-4");
+                    continue;
+                }
             }
+
+            if (starterChoiceInt == 1) { p1 = new Bulbasaur(); }
+            else if (starterChoiceInt == 2) { p1 = new Charmander(); }
+            else if (starterChoiceInt == 3) { p1 = new Squirtle(); }
+            else { p1 = new Healymon(); }
+
+            
+            DisplayBattleScreen(p1, p2, 0);
+            
+            while(p1.IsAlive() && p2.IsAlive()) {
+
+                string? actionChoice = Console.ReadLine();
+            
+                if (actionChoice.Equals("1"))
+                {
+                    DisplayBattleScreen(p1, p2, 1);
+                    string? attackChoiceString = Console.ReadLine();
+
+                    
+
+                } else if (actionChoice.Equals("2")) {
+                    //DisplayBagScreen(p1, p2,);
+                    Console.WriteLine("Choose what Item to use from your bag: [1] = Potion [2] = Back to Menu");
+
+                } else if (actionChoice.Equals("3")) {
+                    
+
+                    DisplayMessageBox("You can't run, fight like a man!", null);
+                }
+                else {
+                    
+                    ClearConsole();
+                    DisplayBattleScreen(p1,p2,-1);
+                    DisplayMessageBox("Please enter a number", null);
+                    continue;
+                }
+            }
+            
+            
+            
+
         }
 
         public void DisplayHealth(Pokemon p1, Pokemon p2) {
@@ -98,8 +156,11 @@ namespace PokemonProject {
                 if (!lineModified) { Console.WriteLine(line); }
                 else { Console.WriteLine(attackBoxLines[i]); }
             }
-        }
+        } 
+        
+        public void DisplayBagScreen(string? potion){
 
+        }
         public void DisplayMessageBox(string? attackMessage, string? effectivenessMessage) {
 
             for (int i = 0; i < messageBoxLines.Length; i++ ) {
@@ -151,7 +212,7 @@ namespace PokemonProject {
             }
         }
 
-        public void DisplayBattleScreen(Pokemon user, Pokemon enemy, int menuCase, Attack? usedMove = null) {
+        public void DisplayBattleScreen(Pokemon user, Pokemon enemy, int menuCase = -1, Attack? usedMove = null) {
 
             for (int i = 0; i < battleSceneStringLines.Length; i++) {
 
@@ -211,8 +272,8 @@ namespace PokemonProject {
 
                 
             }
-
-            if (menuCase == 0) { DisplayMenuBox(); }
+            if (menuCase == -1) {}
+            else if (menuCase == 0) { DisplayMenuBox(); }
             else if (menuCase == 1) { DisplayAttackBox(user); }
             else if (menuCase == 2 && usedMove != null) { 
 
@@ -247,7 +308,7 @@ namespace PokemonProject {
             else { p2 = new Bulbasaur(); }
             
 
-            g.DisplayBattleScreen(p1,p2, 2, p1.moveSet[1]);
+            g.RunGame();
         }
     }
 }
