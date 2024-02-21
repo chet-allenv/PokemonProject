@@ -7,25 +7,30 @@ namespace PokemonProject {
         public readonly string menuBoxFile = "MenuBox.txt";
         public readonly string attackBoxFile = "AttackBox.txt";
         public readonly string messageBoxFile = "MessageBox.txt";
+        public readonly string bagScreenFile = "DisplayBagScreen.txt";
         public string[] battleSceneStringLines;
         public string[] menuBoxLines;
         public string[] attackBoxLines;
         public string[] messageBoxLines;
+        public string[] bagScreenLines;
         public Game() {
 
             battleSceneStringLines = File.ReadAllLines(battleSceneFile);
             menuBoxLines = File.ReadAllLines(menuBoxFile);
             attackBoxLines = File.ReadAllLines(attackBoxFile);
             messageBoxLines = File.ReadAllLines(messageBoxFile);
+            bagScreenLines = File.ReadAllLines(bagScreenFile);
         }
 
-        static void ClearConsole() 
-        {
+        public  void ClearConsole() 
+        {   
+            Sleep(1);
             Console.Clear();
         }
 
-        static void Sleep(int sleepTime) {
-            
+        public  void Sleep(int sleepTime) {
+            sleepTime *= 1000;
+            Thread.Sleep(sleepTime);
         }
 
         public void RunGame() {
@@ -66,31 +71,44 @@ namespace PokemonProject {
             else { p1 = new Healymon(); }
 
             
-            DisplayBattleScreen(p1, p2, 0);
+            
             
             while(p1.IsAlive() && p2.IsAlive()) {
-
+                
+                ClearConsole();
+                DisplayBattleScreen(p1,p2,0);
                 string? actionChoice = Console.ReadLine();
-            
-                if (actionChoice.Equals("1"))
-                {
+
+                actionChoice ??= "NULL_ENTRY";
+                
+                ClearConsole();
+                if (actionChoice.Equals("1")) // Attack Box
+                {   
+                    
                     DisplayBattleScreen(p1, p2, 1);
                     string? attackChoiceString = Console.ReadLine();
 
-                    
+                    if (attackChoiceString == "1") {
+                        
+                        
+                        p1.Attack(0, p2);
+                        DisplayBattleScreen(p1, p2, 2, p1.moveSet[0]);
+                    }
 
-                } else if (actionChoice.Equals("2")) {
+                } 
+                else if (actionChoice.Equals("2")) {
                     //DisplayBagScreen(p1, p2,);
                     Console.WriteLine("Choose what Item to use from your bag: [1] = Potion [2] = Back to Menu");
 
-                } else if (actionChoice.Equals("3")) {
+                } 
+                else if (actionChoice.Equals("3")) {
                     
-
+                    
+                    DisplayBattleScreen(p1,p2,-1);
                     DisplayMessageBox("You can't run, fight like a man!", null);
                 }
                 else {
                     
-                    ClearConsole();
                     DisplayBattleScreen(p1,p2,-1);
                     DisplayMessageBox("Please enter a number", null);
                     continue;
@@ -158,9 +176,38 @@ namespace PokemonProject {
             }
         } 
         
-        public void DisplayBagScreen(string? potion){
+        /*
+        public void DisplayBagScreen(string? potion, string? exit)
+        {
+                for(int i = 0; i < bagScreenLines.Length; i++)
+                {
+                    string line = bagScreenLines[i];
+                    bool isChanged = false;
 
-        }
+                    if(line.Contains("{number}")) {
+                        string spaces = "";
+                        
+                        if(potion == null){
+                            bagScreenLines[i] = line.Replace("{number}", "                                           ");
+                            isChanged = true;
+                        } else {
+                            if(potion.Length < 43)
+                            {
+                                for(int j = 0; j < 43 - potion.Length; j++) 
+                                {
+                                    spaces += " ";
+                                } 
+                            } else if(potion.Length > 43) {
+                                potion = "ITEM MESSAGE IS TOO LONG.                  ";
+                            } potion[i] = line.Replace("{number}", potion + spaces);
+                            isChanged = true;
+                        }
+                    }            
+                }    
+          }
+          */
+        
+        
         public void DisplayMessageBox(string? attackMessage, string? effectivenessMessage) {
 
             for (int i = 0; i < messageBoxLines.Length; i++ ) {
@@ -234,7 +281,7 @@ namespace PokemonProject {
 
                 if (line.Contains("{Game.GetHealthBar(enemy)}")) {
 
-                    battleSceneStringLines[i] = line.Replace("{Game.GetHealthBar(enemy)}", this.GetHealthBar(enemy));
+                    battleSceneStringLines[i] = line.Replace("{Game.GetHealthBar(enemy)}", GetHealthBar(enemy));
                     lineModified = true;
                 }
 
@@ -262,7 +309,7 @@ namespace PokemonProject {
                         }
                     }
                     battleSceneStringLines[i] = line.Replace("{user.health}", healthToString + spaces);
-                    battleSceneStringLines[i] = battleSceneStringLines[i].Replace("{Game.GetHealthBar(user)}", this.GetHealthBar(enemy));
+                    battleSceneStringLines[i] = battleSceneStringLines[i].Replace("{Game.GetHealthBar(user)}", GetHealthBar(enemy));
                     lineModified = true;
 
                 }
@@ -308,7 +355,10 @@ namespace PokemonProject {
             else { p2 = new Bulbasaur(); }
             
 
+            
             g.RunGame();
+            
+
         }
     }
 }

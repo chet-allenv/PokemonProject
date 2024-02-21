@@ -57,6 +57,7 @@ namespace PokemonProject {
         public bool IsAlive() { return health >= 0; }
 
         public virtual void Attack(Pokemon target) { Console.WriteLine("ATTACK IS USED"); }
+        public virtual void Attack(int attackNumber, Pokemon target) { Console.WriteLine("ATTACK IS USED"); }
 
     }
     class Charmander : Pokemon {
@@ -82,6 +83,9 @@ namespace PokemonProject {
             int num = rng.Next(0, moveSet.Length);
 
             moveSet[num].Use(this, target);
+        }
+        public override void Attack(int attackNumber, Pokemon target) {
+            moveSet[attackNumber].Use(this, target);
         }
     }
 
