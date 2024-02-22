@@ -11,9 +11,3 @@
    |           |             |{user.name}    |
    \          /              |{user.health}{Game.GetHealthBar(user)}|
     ----------               +--------------+
----------------------------------------------
-|Enter the number of attack you want  to use|
-|  {attackNumber1}   {attackNumber2}    |
-|                                           |
-|{attackMessage}|
----------------------------------------------

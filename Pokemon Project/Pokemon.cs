@@ -12,6 +12,7 @@ namespace PokemonProject {
         public readonly int originalHealth;
         public int level;
         public string type;
+        public Attack[] moveSet;
 
         public readonly Random rng = new();
 
@@ -24,6 +25,7 @@ namespace PokemonProject {
             this.speed = GenerateStat();
             this.health = GenerateStat();
             this.originalHealth = health;
+            moveSet = new Attack[2];
             this.type = type;
             this.level = level;
         }
@@ -37,6 +39,7 @@ namespace PokemonProject {
             this.speed = GenerateStat();
             this.health = GenerateStat();
             this.originalHealth = health;
+            moveSet = new Attack[2];
             this.type = type;
             this.level = 5;
         }
@@ -54,11 +57,11 @@ namespace PokemonProject {
         public bool IsAlive() { return health >= 0; }
 
         public virtual void Attack(Pokemon target) { Console.WriteLine("ATTACK IS USED"); }
+        public virtual void Attack(int attackNumber, Pokemon target) { Console.WriteLine("ATTACK IS USED"); }
 
     }
     class Charmander : Pokemon {
 
-        Attack[] moveSet;
         public Charmander() : base("Charmander", "Fire") { moveSet = [new TackleAttack(), new EmberAttack()]; }
         public Charmander(int level) : base("Charmander", "Fire", level) { moveSet = [new TackleAttack(), new EmberAttack()]; }
 
@@ -72,7 +75,6 @@ namespace PokemonProject {
 
     class Squirtle : Pokemon {
 
-        Attack[] moveSet;
         public Squirtle() : base("Squirtle", "Water") { moveSet = [new TackleAttack(), new BubbleAttack()]; }
         public Squirtle(int level) : base("Squirtle", "Water", level) { moveSet = [new TackleAttack(), new BubbleAttack()]; }
 
@@ -82,11 +84,13 @@ namespace PokemonProject {
 
             moveSet[num].Use(this, target);
         }
+        public override void Attack(int attackNumber, Pokemon target) {
+            moveSet[attackNumber].Use(this, target);
+        }
     }
 
     class Bulbasaur : Pokemon {
 
-        Attack[] moveSet;
         public Bulbasaur() : base("Bulbasaur" , "Grass") { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
         public Bulbasaur(int level) : base("Bulbasaur", "Grass", level) { moveSet = [new TackleAttack(), new VineWhipAttack()]; }
 
@@ -100,7 +104,6 @@ namespace PokemonProject {
     
     class Healymon : Pokemon {
 
-        Attack[] moveSet;
         public Healymon() : base("Healymon", "Normal") { moveSet = [new TackleAttack(), new HealMove()]; }
         public Healymon(int level) : base("Healymon", "Normal", level) { moveSet = [new TackleAttack(), new HealMove()]; }
 
