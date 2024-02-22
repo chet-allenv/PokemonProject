@@ -129,7 +129,7 @@ namespace PokemonProject {
             else if (p2Num == 2) { p2 = new Healymon(); }
             else { p2 = new Bulbasaur(); }
 
-            g.RunGame(p1,p2);
+            g.DisplayBattleScreen(p1,p2);
         }
     }
 }
