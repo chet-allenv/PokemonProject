@@ -1,5 +1,4 @@
 
-using System.Xml.Serialization;
 
 namespace PokemonProject {
 
@@ -9,12 +8,13 @@ namespace PokemonProject {
         public readonly string menuBoxFile = "MenuBox.txt";
         public readonly string attackBoxFile = "AttackBox.txt";
         public readonly string messageBoxFile = "MessageBox.txt";
-        public readonly string bagScreenFile = "DisplayBagScreen.txt";
+        public readonly string bagBoxFile = "BagBox.txt";
         public string[] battleSceneStringLines;
         public string[] menuBoxLines;
         public string[] attackBoxLines;
         public string[] messageBoxLines;
-        public string[] bagScreenLines;
+        public string[] bagBoxLines;
+        public int inventory;
         public int turnNum;
         public Game() {
 
@@ -22,8 +22,9 @@ namespace PokemonProject {
             menuBoxLines = File.ReadAllLines(menuBoxFile);
             attackBoxLines = File.ReadAllLines(attackBoxFile);
             messageBoxLines = File.ReadAllLines(messageBoxFile);
-            bagScreenLines = File.ReadAllLines(bagScreenFile);
+            bagBoxLines = File.ReadAllLines(bagBoxFile);
             turnNum = 0;
+            inventory = 0;
         }
 
         public  void ClearConsole(double sleepTime = 1.5) 
@@ -79,6 +80,7 @@ namespace PokemonProject {
 
             
             turnNum = p1.speed >= p2.speed ? 0 : 1;
+            inventory = 2;
             
             ClearConsole();
 
@@ -139,8 +141,13 @@ namespace PokemonProject {
 
                     } 
                     else if (actionChoice.Equals("2")) {
-                        //DisplayBagScreen(p1, p2,);
-                        Console.WriteLine("Choose what Item to use from your bag: [1] = Potion [2] = Back to Menu");
+                        
+                        DisplayBattleScreen(p1, p2, 3);
+                        
+                        string? bagChoice = Console.ReadLine();
+                        bagChoice ??= "NULL_ENTRY";
+
+                        if ( bagChoice)
 
                     } 
                     else if (actionChoice.Equals("3")) {
@@ -150,6 +157,7 @@ namespace PokemonProject {
                         DisplayMessageBox("You can't run, fight like a man!", null);
                     }
                     else if (actionChoice.Equals("d")) { // secret stat menu 
+
                         Console.WriteLine($"ENEMY STATS:\n{p2.DisplayStats()}\n\nUSER STATS:\n{p1.DisplayStats()}\n");
                         Console.WriteLine("Press any key to continue...");
                         Console.ReadLine();
@@ -243,36 +251,27 @@ namespace PokemonProject {
             }
         } 
         
-        /*
-        public void DisplayBagScreen(string? potion, string? exit)
-        {
-                for(int i = 0; i < bagScreenLines.Length; i++)
-                {
-                    string line = bagScreenLines[i];
-                    bool isChanged = false;
+        
+        public void DisplayBagScreen(int potionNumber) {
 
-                    if(line.Contains("{number}")) {
-                        string spaces = "";
-                        
-                        if(potion == null){
-                            bagScreenLines[i] = line.Replace("{number}", "                                           ");
-                            isChanged = true;
-                        } else {
-                            if(potion.Length < 43)
-                            {
-                                for(int j = 0; j < 43 - potion.Length; j++) 
-                                {
-                                    spaces += " ";
-                                } 
-                            } else if(potion.Length > 43) {
-                                potion = "ITEM MESSAGE IS TOO LONG.                  ";
-                            } potion[i] = line.Replace("{number}", potion + spaces);
-                            isChanged = true;
-                        }
-                    }            
-                }    
-          }
-          */
+            for(int i = 0; i < bagBoxLines.Length; i++)
+            {
+                string line = bagBoxLines[i];
+
+                if(line.Contains("{number}")) {
+
+                    string spaces = "";
+                    string potionNumberToString = potionNumber >= 0 ? potionNumber.ToString() : "0";
+                    
+                    if(potionNumberToString.Length < 8 ) { for(int j = 0; j < 43 - potionNumberToString.Length; j++) { spaces += " "; } } 
+
+                    line = bagBoxLines[i].Replace("{number}", potionNumberToString + spaces);
+                }
+
+                Console.WriteLine(line);            
+            }   
+        }
+          
         
         
         public void DisplayMessageBox(string? attackMessage, string? effectivenessMessage) {
@@ -412,6 +411,7 @@ namespace PokemonProject {
             else if (menuCase == 2 && usedMove == null) {
                 DisplayMessageBox(null, null);
             }
+            else if (menuCase == 3 ) { DisplayBagScreen(); }
         }
 
         public static void Main(string[] args) {

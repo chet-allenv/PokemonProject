@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+      "projectUniqueName": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
       "projectName": "Pokemon Project",
-      "projectPath": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+      "projectPath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
       "packagesPath": "C:\\Users\\cheta\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\obj\\",
+      "outputPath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\cheta\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -64,13 +64,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file c:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }
