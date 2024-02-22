@@ -37,24 +37,24 @@ namespace PokemonProject {
             this.defence = GenerateStat();
             this.special = GenerateStat();
             this.speed = GenerateStat();
-            this.health = GenerateStat();
+            this.health = GenerateStat(30, 70);
             this.originalHealth = health;
             moveSet = new Attack[2];
             this.type = type;
-            this.level = 5;
+            this.level = 10;
         }
 
-        public void DisplayStats() {
+        public string DisplayStats() {
 
-            Console.WriteLine($"Pokemon: {this.name}\nType: {this.type}\nHP: {this.health}\nAttack: {this.attack}\nDefence: {this.defence}\nSpecial: {this.special}\nSpeed: {this.speed}");
+            return $"Pokemon: {this.name}\nType: {this.type}\nBase HP: {this.originalHealth}\nCurrent HP: {this.health}\nAttack: {this.attack}\nDefence: {this.defence}\nSpecial: {this.special}\nSpeed: {this.speed}";
         }
 
-        public int GenerateStat() {
+        public int GenerateStat(int low = 5, int high = 25) {
             
-            return rng.Next(10, 25) + 1 * (2 * level / 5 + 2);
+            return rng.Next(low, high) + 2 * (2 * level / 5 + 2);
         }
 
-        public bool IsAlive() { return health >= 0; }
+        public bool IsAlive() { return health > 0; }
 
         public virtual void Attack(Pokemon target) { Console.WriteLine("ATTACK IS USED"); }
         public virtual void Attack(int attackNumber, Pokemon target) { Console.WriteLine("ATTACK IS USED"); }
@@ -70,6 +70,9 @@ namespace PokemonProject {
             int num = rng.Next(0, moveSet.Length);
 
             moveSet[num].Use(this, target);
+        }
+        public override void Attack(int attackNumber, Pokemon target) {
+            moveSet[attackNumber].Use(this, target);
         }
     }
 
@@ -100,6 +103,10 @@ namespace PokemonProject {
 
             moveSet[num].Use(this, target);
         }
+
+        public override void Attack(int attackNumber, Pokemon target) {
+            moveSet[attackNumber].Use(this, target);
+        }
     }
     
     class Healymon : Pokemon {
@@ -112,9 +119,15 @@ namespace PokemonProject {
             int num = rng.Next(0, moveSet.Length);
 
             if (moveSet[num].name.Equals("Heal")) {
-                moveSet[num].Use(this, this);
+                moveSet[num].Use(this);
             }
             else { moveSet[num].Use(this, target); }
+        }
+
+        public override void Attack(int attackNumber, Pokemon target) {
+
+            if (attackNumber == 0) { moveSet[attackNumber].Use(this, target); }
+            else { moveSet[attackNumber].Use(this); }
         }
     }
 }

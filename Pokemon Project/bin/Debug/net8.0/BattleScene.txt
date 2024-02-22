@@ -1,7 +1,7 @@
 ---------------------------------------------
 +--------------+               ___________             
 |{enemy.name}    |              /  \     /  \         
-|    {Game.GetHealthBar(enemy)}|             |   O     O   |  
+|{enemy.health}{Game.GetHealthBar(enemy)}|             |   O     O   |  
 +--------------+              \     Π     /
                                -----------                      
 

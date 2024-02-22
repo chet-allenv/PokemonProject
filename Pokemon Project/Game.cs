@@ -1,4 +1,6 @@
 
+using System.Xml.Serialization;
+
 namespace PokemonProject {
 
     class Game {
@@ -13,6 +15,7 @@ namespace PokemonProject {
         public string[] attackBoxLines;
         public string[] messageBoxLines;
         public string[] bagScreenLines;
+        public int turnNum;
         public Game() {
 
             battleSceneStringLines = File.ReadAllLines(battleSceneFile);
@@ -20,23 +23,23 @@ namespace PokemonProject {
             attackBoxLines = File.ReadAllLines(attackBoxFile);
             messageBoxLines = File.ReadAllLines(messageBoxFile);
             bagScreenLines = File.ReadAllLines(bagScreenFile);
+            turnNum = 0;
         }
 
-        public  void ClearConsole() 
+        public  void ClearConsole(double sleepTime = 1.5) 
         {   
-            Sleep(1);
+            Sleep(sleepTime);
             Console.Clear();
         }
 
-        public  void Sleep(int sleepTime) {
+        public void Sleep(double sleepTime) {
             sleepTime *= 1000;
-            Thread.Sleep(sleepTime);
+            Thread.Sleep((int)sleepTime);
         }
 
         public void RunGame() {
-
-            int turnNum = 0;
             
+
             Pokemon p1;
             Pokemon p2;
 
@@ -49,9 +52,13 @@ namespace PokemonProject {
             else { p2 = new Bulbasaur(); }
             
             int starterChoiceInt;
+
             while(true) {
+
                 Console.WriteLine("Enter the number of the Pokemon you would like to use!\n1) Bulbasaur\n2) Charmander\n3) Squirtle\n4) Healymon");
                 string? starterChoiceString = Console.ReadLine();
+
+                starterChoiceString ??= "NULL_ENTRY";
 
                 try {
 
@@ -71,51 +78,114 @@ namespace PokemonProject {
             else { p1 = new Healymon(); }
 
             
+            turnNum = p1.speed >= p2.speed ? 0 : 1;
             
+            ClearConsole();
+
+            if (turnNum == 1) { DisplayBattleScreen(p1, p2); DisplayMessageBox($"Enemy {p2.name} is faster, they go first", null); }
+            else { DisplayBattleScreen(p1, p2); DisplayMessageBox($"Your {p1.name} is faster, you go first", null); }
             
             while(p1.IsAlive() && p2.IsAlive()) {
-                
-                ClearConsole();
-                DisplayBattleScreen(p1,p2,0);
-                string? actionChoice = Console.ReadLine();
 
-                actionChoice ??= "NULL_ENTRY";
-                
                 ClearConsole();
-                if (actionChoice.Equals("1")) // Attack Box
-                {   
+
+                if (turnNum % 2 == 0) {
+
+                    DisplayBattleScreen(p1,p2,0);
+
+                    string? actionChoice = Console.ReadLine();
+
+                    actionChoice ??= "NULL_ENTRY";
                     
-                    DisplayBattleScreen(p1, p2, 1);
-                    string? attackChoiceString = Console.ReadLine();
+                    ClearConsole(1);
 
-                    if (attackChoiceString == "1") {
+                    if (actionChoice.Equals("1")) // Attack Box
+                    {   
+                        
+                        DisplayBattleScreen(p1, p2, 1);
+                        string? attackChoiceString = Console.ReadLine();
+
+                        if (attackChoiceString == "1") {
+                            
+                            ClearConsole(1);
+
+                            int tempHealth = p2.health;
+                            p1.Attack(0, p2);
+                            if (tempHealth == p2.health) {
+
+                                DisplayBattleScreen(p1, p2, 2, p1.moveSet[0], true);
+                            }
+                            else {
+
+                                DisplayBattleScreen(p1, p2, 2, p1.moveSet[0]);
+                            }
+                            
+                        }
+                        else {
+
+                            ClearConsole(1);
+
+                            int tempHealth = p2.health;
+                            p1.Attack(1, p2);
+                            if (tempHealth == p2.health) {
+
+                                DisplayBattleScreen(p1, p2, 2, p1.moveSet[1], true);
+                            }
+                            else {
+
+                                DisplayBattleScreen(p1, p2, 2, p1.moveSet[1]);
+                            }
+                        }
+
+                    } 
+                    else if (actionChoice.Equals("2")) {
+                        //DisplayBagScreen(p1, p2,);
+                        Console.WriteLine("Choose what Item to use from your bag: [1] = Potion [2] = Back to Menu");
+
+                    } 
+                    else if (actionChoice.Equals("3")) {
                         
                         
-                        p1.Attack(0, p2);
-                        DisplayBattleScreen(p1, p2, 2, p1.moveSet[0]);
+                        DisplayBattleScreen(p1,p2,-1);
+                        DisplayMessageBox("You can't run, fight like a man!", null);
                     }
-
-                } 
-                else if (actionChoice.Equals("2")) {
-                    //DisplayBagScreen(p1, p2,);
-                    Console.WriteLine("Choose what Item to use from your bag: [1] = Potion [2] = Back to Menu");
-
-                } 
-                else if (actionChoice.Equals("3")) {
-                    
-                    
-                    DisplayBattleScreen(p1,p2,-1);
-                    DisplayMessageBox("You can't run, fight like a man!", null);
+                    else if (actionChoice.Equals("d")) { // secret stat menu 
+                        Console.WriteLine($"ENEMY STATS:\n{p2.DisplayStats()}\n\nUSER STATS:\n{p1.DisplayStats()}\n");
+                        Console.WriteLine("Press any key to continue...");
+                        Console.ReadLine();
+                        turnNum--;
+                    }
+                    else {
+                        
+                        DisplayBattleScreen(p1,p2,-1);
+                        DisplayMessageBox("Please enter a number", null);
+                        continue;
+                    }
+                    turnNum++;
                 }
                 else {
-                    
-                    DisplayBattleScreen(p1,p2,-1);
-                    DisplayMessageBox("Please enter a number", null);
-                    continue;
+
+                    int randomAttackNum = rng.Next(0,2);
+
+                    int tempHealth = p1.health;
+
+                    p2.Attack(randomAttackNum, p1);
+
+                    if (tempHealth == p1.health) {
+                        DisplayBattleScreen(p1, p2, 2, p2.moveSet[randomAttackNum], true);
+                    }
+                    else {
+                        DisplayBattleScreen(p1, p2, 2, p2.moveSet[randomAttackNum]);
+                    }
+
+                    turnNum++;
                 }
             }
             
-            
+            ClearConsole();
+            DisplayBattleScreen(p1,p2,-1);
+            if (!p1.IsAlive()) { DisplayMessageBox($"Your {p1.name} fainted. You lose.", null); }
+            else if (!p2.IsAlive()) { DisplayMessageBox($"Enemy {p2.name} fainted. You Win!", null); }
             
 
         }
@@ -151,7 +221,6 @@ namespace PokemonProject {
             for (int i = 0; i < attackBoxLines.Length; i++) {
 
                 string line = attackBoxLines[i];
-                bool lineModified = false;
 
                 if (line.Contains("{attackNumber1}")) {
                     
@@ -166,13 +235,11 @@ namespace PokemonProject {
                         for (int j = 0; j < 15 - pokemon.moveSet[1].name.Length; j++) { spaces2 += " "; }
                     }
 
-                    attackBoxLines[i] = line.Replace("{attackNumber1}", pokemon.moveSet[0].name + spaces1);
-                    attackBoxLines[i] = attackBoxLines[i].Replace("{attackNumber2}", pokemon.moveSet[1].name + spaces2);
-                    lineModified = true;
+                    line = attackBoxLines[i].Replace("{attackNumber1}", pokemon.moveSet[0].name + spaces1);
+                    line = line.Replace("{attackNumber2}", pokemon.moveSet[1].name + spaces2);
                 }
 
-                if (!lineModified) { Console.WriteLine(line); }
-                else { Console.WriteLine(attackBoxLines[i]); }
+                Console.WriteLine(line);
             }
         } 
         
@@ -213,15 +280,13 @@ namespace PokemonProject {
             for (int i = 0; i < messageBoxLines.Length; i++ ) {
 
                 string line = messageBoxLines[i];
-                bool lineModified = false;
 
                 if (line.Contains("{moveBeingUsedMessage}")) {
 
                     string spaces = "";
 
                     if (attackMessage == null) {
-                        messageBoxLines[i] = line.Replace("{moveBeingUsedMessage}", "                                           ");
-                        lineModified = true;
+                        line = messageBoxLines[i].Replace("{moveBeingUsedMessage}", "                                           ");
                     }
                     else {
                         if (attackMessage.Length < 43) {
@@ -229,8 +294,7 @@ namespace PokemonProject {
                         }
                         else if (attackMessage.Length > 43) { attackMessage = "ATTACK MESSAGE IS TOO LONG.                 "; }
 
-                        messageBoxLines[i] = line.Replace("{moveBeingUsedMessage}", attackMessage + spaces);
-                        lineModified = true;
+                        line = messageBoxLines[i].Replace("{moveBeingUsedMessage}", attackMessage + spaces);
                     }
                 }
 
@@ -239,8 +303,7 @@ namespace PokemonProject {
                     string spaces = "";
 
                     if (effectivenessMessage == null) {
-                        messageBoxLines[i] = line.Replace("{effectivenessMessage}", "                                           ");
-                        lineModified = true;
+                        line = messageBoxLines[i].Replace("{effectivenessMessage}", "                                           ");
                     }
                     else {
                         if (effectivenessMessage.Length < 43) {
@@ -248,23 +311,19 @@ namespace PokemonProject {
                         }
                         else if (effectivenessMessage.Length > 43) { effectivenessMessage = "EFFECTIVENESS MESSAGE IS TOO LONG.           "; }
 
-                        messageBoxLines[i] = line.Replace("{effectivenessMessage}", effectivenessMessage + spaces);
-                        lineModified = true;
+                        line = messageBoxLines[i].Replace("{effectivenessMessage}", effectivenessMessage + spaces);
                     }
                 }
 
-
-                if (!lineModified) { Console.WriteLine(line); }
-                else { Console.WriteLine(messageBoxLines[i]); }
+                Console.WriteLine(line);
             }
         }
 
-        public void DisplayBattleScreen(Pokemon user, Pokemon enemy, int menuCase = -1, Attack? usedMove = null) {
+        public void DisplayBattleScreen(Pokemon user, Pokemon enemy, int menuCase = -1, Attack? usedMove = null, bool attackMissed = false) {
 
             for (int i = 0; i < battleSceneStringLines.Length; i++) {
 
                 string line = battleSceneStringLines[i];
-                bool lineModified = false;
 
                 if (line.Contains("{enemy.name}")) {
 
@@ -275,14 +334,23 @@ namespace PokemonProject {
                             spaces += " ";
                         }
                     }
-                    battleSceneStringLines[i] = line.Replace("{enemy.name}", enemy.name + spaces);
-                    lineModified = true;
+                    line = battleSceneStringLines[i].Replace("{enemy.name}", enemy.name + spaces);
                 }
 
-                if (line.Contains("{Game.GetHealthBar(enemy)}")) {
+                if (line.Contains("{enemy.health}")) { 
 
-                    battleSceneStringLines[i] = line.Replace("{Game.GetHealthBar(enemy)}", GetHealthBar(enemy));
-                    lineModified = true;
+                    string spaces = "";
+                    string healthToString = enemy.health > 0 ? enemy.health.ToString() : "0";
+
+                    if (healthToString.Length < 4) {
+                        for (int j = 0; j < 4 - healthToString.Length; j++) {
+                            spaces += " ";
+                        }
+                    }
+
+                    line = battleSceneStringLines[i].Replace("{enemy.health}", healthToString + spaces);
+                    line = line.Replace("{Game.GetHealthBar(enemy)}", GetHealthBar(enemy));
+
                 }
 
                 if (line.Contains("{user.name}")) {
@@ -294,28 +362,26 @@ namespace PokemonProject {
                             spaces += " ";
                         }
                     }
-                    battleSceneStringLines[i] = line.Replace("{user.name}", user.name + spaces);
-                    lineModified = true;
+                    line = battleSceneStringLines[i].Replace("{user.name}", user.name + spaces);
+
                 }
                 
                 if (line.Contains("{user.health}")) {
 
                     string spaces = "";
-                    string healthToString = user.health.ToString();
+                    string healthToString = user.health > 0 ? user.health.ToString() : "0";
 
                     if (healthToString.Length < 4) {
                         for (int j = 0; j < 4 - healthToString.Length; j++) {
                             spaces += " ";
                         }
                     }
-                    battleSceneStringLines[i] = line.Replace("{user.health}", healthToString + spaces);
-                    battleSceneStringLines[i] = battleSceneStringLines[i].Replace("{Game.GetHealthBar(user)}", GetHealthBar(enemy));
-                    lineModified = true;
+                    line = battleSceneStringLines[i].Replace("{user.health}", healthToString + spaces);
+                    line = line.Replace("{Game.GetHealthBar(user)}", GetHealthBar(user));
 
                 }
 
-                if (!lineModified) { Console.WriteLine(line); }
-                else { Console.WriteLine( battleSceneStringLines[i]); }
+                Console.WriteLine(line);
 
                 
             }
@@ -325,44 +391,49 @@ namespace PokemonProject {
             else if (menuCase == 2 && usedMove != null) { 
 
                 if (usedMove.name.Equals("Heal")) {
-                    string attackMessage = usedMove.Use(user);
+                    string attackMessage = usedMove.GetAttackMessage(turnNum % 2 == 0 ? user : enemy);
                     DisplayMessageBox(attackMessage, "                                           ");
                 }
                 else {
-                    string? attackMessage = usedMove.Use(user, enemy).attackMessage;
-                    string? effectivenessMessage = usedMove.Use(user, enemy).effectivenessMessage;
+
+                    string attackMessage = usedMove.GetAttackMessage(turnNum % 2 == 0 ? user : enemy);
+                    string effectivenessMessage;
+
+                    if (!attackMissed) {
+                        effectivenessMessage = usedMove.CalculateTypeEffectiveness(turnNum % 2 == 0 ? enemy : user).message;
+                    }
+                    else {
+                        effectivenessMessage = "Attack Missed";
+                    }
 
                     DisplayMessageBox(attackMessage, effectivenessMessage);
                 }
-               
+            }
+            else if (menuCase == 2 && usedMove == null) {
+                DisplayMessageBox(null, null);
             }
         }
 
         public static void Main(string[] args) {
 
-            Game g = new(); Random r = new();
-            int p1Num = r.Next(0,4); int p2Num = r.Next(0,4);
-            Pokemon p1; Pokemon p2;
-
-            if (p1Num == 0) { p1 = new Charmander(); }
-            else if (p1Num == 1) { p1 = new Squirtle(); }
-            else if (p1Num == 2) { p1 = new Healymon(); }
-            else { p1 = new Bulbasaur(); }
-
-            if (p2Num == 0) { p2 = new Charmander(); }
-            else if (p2Num == 1) { p2 = new Squirtle(); }
-            else if (p2Num == 2) { p2 = new Healymon(); }
-            else { p2 = new Bulbasaur(); }
             
-
+            Game g = new();
             
-            g.RunGame();
-            
+            while(true) {
+                g.RunGame();
 
-<<<<<<< HEAD
-            g.DisplayBattleScreen(p1,p2);
-=======
->>>>>>> 4e83d36f18edd5533c8c5131f06faf7c4acd9314
+                Console.WriteLine("Play again?\n[1] Yes\n[2] No");
+                string? input = Console.ReadLine();
+
+                if (input == "1") {
+                    continue;
+                }
+                else if (input == "2") {
+                    break;
+                }
+                else { Console.WriteLine("Wrong character entered, exiting the program..."); break; }
+            }
+            
         }
     }
 }
