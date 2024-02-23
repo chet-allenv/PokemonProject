@@ -65,6 +65,7 @@ namespace PokemonProject {
             
             turnNum = p1.speed >= p2.speed ? 0 : 1;
             inventory = rng.Next(1,4);
+            bool ranAway = false;
             
             ClearConsole();
 
@@ -141,9 +142,9 @@ namespace PokemonProject {
                             
                             ClearConsole();
 
-                            int healthHealed = Potion.Use(inventory, p1).healthHealed;
-                            string messageTop = Potion.Use(inventory, p1).messageTop;
-                            string messageBottom = Potion.Use(inventory, p1).messageBottom;
+                            int healthHealed = PotionUse(inventory, p1).healthHealed;
+                            string messageTop = PotionUse(inventory, p1).messageTop;
+                            string messageBottom = PotionUse(inventory, p1).messageBottom;
 
                             DisplayBattleScreen(p1, p2, -1);
                             if (!messageBottom.Equals("")) {
@@ -165,12 +166,27 @@ namespace PokemonProject {
                             DisplayMessageBox("Please enter 1 or 2", null);
                         }
                     } 
-                    else if (actionChoice.Equals("3")) {
+                    else if (actionChoice.Equals("3")) { // Run Away
                         
                         
                         DisplayBattleScreen(p1,p2,-1);
-                        DisplayMessageBox("You can't run, fight like a man!", null);
-                        continue;
+                        DisplayMessageBox(null, null);
+
+                        int oddsToEscape = CalculateRunAway(p1, p2);
+
+                        int randomOdds = rng.Next(0, 256);
+
+                        if (oddsToEscape > 255 || randomOdds < oddsToEscape) {
+                            ranAway = true;
+                            break;
+                        }
+                        else {
+                            
+                            ClearConsole();
+
+                            DisplayBattleScreen(p1,p2,-1);
+                            DisplayMessageBox("Failed to run away. You've lost your turn", null);
+                        }
                     }
                     else if (actionChoice.Equals("d")) { // secret stat menu 
 
@@ -208,12 +224,48 @@ namespace PokemonProject {
             
             ClearConsole();
             DisplayBattleScreen(p1,p2,-1);
-            if (!p1.IsAlive()) { DisplayMessageBox($"Your {p1.name} fainted. You lose.", null); }
+            if (ranAway == true) { DisplayMessageBox("Successfully ran away!", null); }
+            else if (!p1.IsAlive()) { DisplayMessageBox($"Your {p1.name} fainted. You lose.", null); }
             else if (!p2.IsAlive()) { DisplayMessageBox($"Enemy {p2.name} fainted. You Win!", null); }
             
 
         }
+
+        public static (string messageTop, string messageBottom, int healthHealed) PotionUse(int inventory, Pokemon user) {
+
+            string messageTop;
+            string messageBottom = "";
+            int healNumber = 20;
+
+            if (inventory > 0) {
+
+                messageTop = $"You used a potion on {user.name}";
+
+                if (user.health + 20 > user.originalHealth) {
+                    
+                    healNumber =  user.originalHealth - user.health;
+                }
+
+                messageBottom = $"Healed {healNumber} health to {user.name}";
+            }
+            else {
+                messageTop = "Unable to use potions. You have none";
+            }
+
+            return (messageTop, messageBottom, healNumber);
+        }
         
+        public int CalculateRunAway(Pokemon p1, Pokemon p2) {
+
+            if (p2.speed / 4 % 256 == 0) {
+                return 256;
+            }
+
+            int oddsToEscape = (p1.speed * 32 / (p2.speed / 4 % 256)) + 30;
+
+            return oddsToEscape;
+        }
+
         public void DisplayMessageBox(string? topMessage, string? bottomMessage) { graphics.DisplayMessageBox(topMessage, bottomMessage); }
 
         public void DisplayBattleScreen(Pokemon user, Pokemon enemy, int menuCase = -1, Attack? usedMove = null, bool attackMissed = false) { graphics.DisplayBattleScreen(inventory, turnNum, user, enemy, menuCase, usedMove, attackMissed); }
