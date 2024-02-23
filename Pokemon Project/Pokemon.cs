@@ -109,25 +109,4 @@ namespace PokemonProject {
         }
     }
     
-    class Healymon : Pokemon {
-
-        public Healymon() : base("Healymon", "Normal") { moveSet = [new TackleAttack(), new HealMove()]; }
-        public Healymon(int level) : base("Healymon", "Normal", level) { moveSet = [new TackleAttack(), new HealMove()]; }
-
-        public override void Attack(Pokemon target) {
-
-            int num = rng.Next(0, moveSet.Length);
-
-            if (moveSet[num].name.Equals("Heal")) {
-                moveSet[num].Use(this);
-            }
-            else { moveSet[num].Use(this, target); }
-        }
-
-        public override void Attack(int attackNumber, Pokemon target) {
-
-            if (attackNumber == 0) { moveSet[attackNumber].Use(this, target); }
-            else { moveSet[attackNumber].Use(this); }
-        }
-    }
 }

@@ -4,11 +4,11 @@ namespace PokemonProject {
 
         public Potion() {}
 
-        public static (string messageTop, string messageBottom) Use(int inventory, Pokemon user) {
+        public static (string messageTop, string messageBottom, int healthHealed) Use(int inventory, Pokemon user) {
 
             string messageTop;
             string messageBottom = "";
-            string healNumber = "20";
+            int healNumber = 20;
 
             if (inventory > 0) {
 
@@ -16,7 +16,7 @@ namespace PokemonProject {
 
                 if (user.health + 20 > user.originalHealth) {
                     
-                    healNumber =  (user.originalHealth - user.health).ToString();
+                    healNumber =  user.originalHealth - user.health;
                 }
 
                 messageBottom = $"Healed {healNumber} health to {user.name}";
@@ -25,7 +25,7 @@ namespace PokemonProject {
                 messageTop = "Unable to use potions. You have none";
             }
 
-            return (messageTop, messageBottom);
+            return (messageTop, messageBottom, healNumber);
         }
     }
 }
