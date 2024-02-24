@@ -109,7 +109,6 @@ namespace PokemonProject {
 
                 // Subtracts damage from the target pokemon's health
                 target.health -= damage;
-
             }
 
             // Returns the used string.
@@ -141,65 +140,119 @@ namespace PokemonProject {
         
     }
 
+    /* SPECIAL ATTACKS ARE ATTACKS THAT ARE OF THE FOLLOWING TYPES
+    *  - Fire
+    *  - Grass
+    *  - Water
+    */
+    /// <summary>
+    /// The parent class for special attacks which are of a certain type and calculates damage using the user's special stat and 
+    /// the target's special stat.
+    /// </summary>
     class SpecialAttack : Attack {
 
+        // Constructor that calls the contructor from Attack
         public SpecialAttack(int power, int accuracy, string type, string name) : base(power, accuracy, name, type) {}
 
+        /// <summary>
+        /// Method that uses the move. It calculates damage and subtracts it from the Target's health It then returns the 
+        /// attack message that states who used the move and the name of the move.
+        /// </summary>
+        /// <param name="user"> User of the attack </param>
+        /// <param name="target"> Target of the attack </param>
+        /// <returns> attackMessage that states the user and the used move </returns>
         public override string  Use(Pokemon user, Pokemon target) {
             
+            // Used to test the accuracy. As long as it is LOWER than the accuracy of the move, the attack will land
             int testAccuracy = rng.Next(0, 101);
 
-
-            string attackMessage = $"{user.name} used {this.name}!";
-
+            // Checks the accuracy
             if (testAccuracy <= accuracy) {
 
+                // STAB stands for Same Type Attack Boost. Essentially if used move is of the same type as the user, 
+                // there is a slight damage increase.
                 double STAB = moveType.Equals(user.type) ? 1.5 : 1.0;
+
+                // Gets the effectiveness stat from the parent method CalculateTypeEffectiveness(). See it's documentation for explanation
                 double typeEffectiveness = CalculateTypeEffectiveness(target).effectiveness;
 
+                // Sets damage to equal the value returned by the CalculateDamage() method within this class. See it's documentation for explanation
                 int damage = CalculateDamage(user, target, STAB, typeEffectiveness);
 
+                // Subtracts damage from the target pokemon's health
                 target.health -= damage;
-                
-
             }
 
-
-            return attackMessage;
+            // Returns the used string.
+            return $"{user.name} used {this.name}!";
         }
 
+        /// <summary>
+        /// Calculates the damage of the attack. Formula is modified from the Generation 1 formula created by the Game Freak Corporation.
+        /// Formula taken from https://bulbapedia.bulbagarden.net/wiki/Damage
+        /// </summary>
+        /// <param name="user"> User of the move </param>
+        /// <param name="target"> Target of the move </param>
+        /// <param name="STAB"> Same Type Attack Bonus of the User </param>
+        /// <param name="typeEffectiveness"> Type effectiveness of the attack </param>
+        /// <returns> the damage of the attack </returns>
         public int CalculateDamage(Pokemon user, Pokemon target, double STAB, double typeEffectiveness) {
 
+            // Calculates a random number from 217 - 255. This is done in the original generation 1 Pokemon Games
             int randomNumber = rng.Next(217, 256);
 
+            // This is the formula for the damage. It takes the user's level, user's special stat, the attack's power, the target's special stat
+            // the STAB of the user, the type effectiveness of the attack, and the random number from 217 - 256
             double d = ((2 * user.level / 5 + 2) * user.special * power / target.special / 50 + 2) * STAB * typeEffectiveness * randomNumber / 100;
-            int damage = (int) d;
+            int damage = (int) d; // Converts the double to an int
 
-            return damage;
+            return damage; // returns the int damage
         }
     }
 
+    /// <summary>
+    /// This is the tackle attack. It inherits from physical because it is a normal type move
+    /// </summary>
     class TackleAttack : PhysicalAttack {
 
+        // Constructor. Has base power of 30, an accuracy of 70, it's Normal type, and is named Tackle
         public TackleAttack() : base(30, 70, "Normal", "Tackle") {}
     }
 
+    /// <summary>
+    /// This is the ember attack. It inherits from special because it is a fire type move
+    /// </summary>
     class EmberAttack : SpecialAttack {
         
+        // Constructor. Has base power of 30, an accuracy of 80, it's fire type, and is named ember
         public EmberAttack() : base(30, 80, "Fire", "Ember") {}
     }
 
+    /// <summary>
+    /// This is the Flamethrower attack. It inherits from special because it is a fire type move.
+    /// CURRENTLY UNUSED
+    /// </summary>
     class Flamethrower : SpecialAttack {
 
+        // Constructor. Has base power of 70, an accuracy of 80, it's fire type, and is named flamethrower
         public Flamethrower() : base(70, 80, "Fire", "Flamethrower") {}
     }
 
+    /// <summary>
+    /// This is the Bubble attack. It inherits from special because it is a water type move.
+    /// </summary>
     class BubbleAttack : SpecialAttack {
+
+        // Constructor. Has base power of 30, an accuracy of 80, it's water type, and is named bubble
         public BubbleAttack() : base(30, 80, "Water", "Bubble") {}
     }
 
+    /// <summary>
+    /// This is the Wine Whip attack. It inherits from special because it is a grass type move.
+    /// </summary>
     class VineWhipAttack : SpecialAttack {
 
+        // Constructor. Has base power of 30, an accuracy of 80, it's grass type, and is named Vine Whip
         public VineWhipAttack() : base(30, 80, "Grass", "Vine Whip") {}
     }
 }
