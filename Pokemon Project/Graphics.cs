@@ -151,7 +151,7 @@ namespace PokemonProject {
         /// </summary>
         /// <param name="messageTop"> This is the message that is to be displayed at the top. CAN BE NULL </param>
         /// <param name="messageBottom"> this is the message that is to be displayed at the bottom. CAN BE NULL </param>
-        public void DisplayMessageBox(string? messageTop, string? effectivenessMessage) {
+        public void DisplayMessageBox(string? messageTop, string? messageBottom) {
 
             // Iterates through every line in messageBoxLines
             for (int i = 0; i < messageBoxLines.Length; i++ ) {
