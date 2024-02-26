@@ -1,17 +1,19 @@
 
 namespace PokemonProject {
 
+    // This class handles creating the type matchups for the game
     class PokemonType {
 
-        public string name;
 
+        // Dictionary of the type weaknesses. The key is the current type and the list is what attacks it's weak against
         public Dictionary<string, List<string>> weaknessDict = [];
+
+        // Dictionary of the type strengths. The key is the current type and the list is what attacks it's strong against
         public Dictionary<string, List<string>> strengthDict = [];
 
-        public PokemonType() {
-            this.name = "NULL_TYPE";
-        }
-
+        /// <summary>
+        /// Initializes all the type match ups and populates the dictionaries if they have not been already
+        /// </summary>
         public void InitializeTypeMatchups() {
             
             if (weaknessDict.Count == 0) {

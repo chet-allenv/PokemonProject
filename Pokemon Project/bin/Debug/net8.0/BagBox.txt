@@ -1,6 +1,6 @@
 ---------------------------------------------
-|                                           |
-| [1]: Potion {number}               |
+|Enter the number that you would like to use|
+| [1]: Potion {number}                      |
 | [2]: Back                                 |
 |                                           |
 ---------------------------------------------
