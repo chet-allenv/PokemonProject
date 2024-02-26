@@ -307,92 +307,129 @@ namespace PokemonProject {
                 }
                 // If the turnNum is NOT able to be divided evenly by 2, it is the enemy's turn.
                 else { 
-
+                    
+                    // Using Random.Next() assigns a value from 0 - 1 to randomAttackNum.
                     int randomAttackNum = rng.Next(0,2);
 
+                    // creates a temporary variable that holds the health of the user BEFORE the attack is used
                     int tempHealth = p1.health;
 
+                    // Uses the Pokemon.Attack() method to use the attack. See Pokemon.Attack() for furthur documentation. 
                     p2.Attack(randomAttackNum, p1);
 
-                    if (tempHealth == p1.health) {
+                    // Checks if the user's health has changed by comparing it to the tempHealth variable that has the value of the user's
+                    // health BEFORE the attack was used.
+                    if (tempHealth == p1.health) { // If they have the same value
+
+                        // Calls the Game.DisplayBattleScreen() method. See Game.DisplayBattleScreen() for further documentation.
                         DisplayBattleScreen(p1, p2, 2, p2.moveSet[randomAttackNum], true);
                     }
-                    else {
+                    else { // If they do NOT have the same value.
+
+                        // Calls the Game.DisplayBattleScreen() method. See Game.DisplayBattleScreen() for further documentation.
                         DisplayBattleScreen(p1, p2, 2, p2.moveSet[randomAttackNum]);
                     }
-
+                    // Increases turnNum by 1, changing it to the user's turn.
                     turnNum++;
                 }
             }
             
+            // Calls the Game.ClearConsole() method to clear the console.
             ClearConsole();
+            // Calls the Game.DisplayBattleScreen() method. See Game.DisplayBattleScreen() for further documentation.
             DisplayBattleScreen(p1,p2,-1);
+
+            // Checks if the user successfully ran away or one of the pokemon has died.
+            
+            // If user ran away, displays a message to the user letting them know they ran away using the Game.DisplayMessageBox() function. 
+            // See Game.DisplayMessageBox() for furthur documentation.
             if (ranAway == true) { DisplayMessageBox("Successfully ran away!", null); }
+            // If the user is NOT alive, displays a message to the user letting them know they lost using the Game.DisplayMessageBox() function. 
+            // See Game.DisplayMessageBox() for furthur documentation.
             else if (!p1.IsAlive()) { DisplayMessageBox($"Your {p1.name} fainted. You lose.", null); }
+            // If the enemy is NOT alive, displays a message to the user letting them know they won using the Game.DisplayMessageBox() function. 
+            // See Game.DisplayMessageBox() for furthur documentation.
             else if (!p2.IsAlive()) { DisplayMessageBox($"Enemy {p2.name} fainted. You Win!", null); }
             
 
         }
 
+        /// <summary>
+        /// Returns messages that show if the potion was used and an int of how much health was healed.
+        /// </summary>
+        /// <param name="inventory"> Number of potions in the user's inventory </param>
+        /// <param name="user"> The user of the potions. Will be the user of the program. </param>
+        /// <returns> 
+        /// <see cref="messageTop"/> returns the string that will be displayed at the top of the message box. Will say if the user used a potion or not.
+        /// <see cref="messageBottom"/> returns the string that will be displayed at the bottom of the message box. Says the amount of health healed. If unable to use postion will be blank.
+        /// <see cref="healthHealed"/> Returns the number of health that will be healed by the potion. MAXIMUM OF 20
+        /// </returns>
         public static (string messageTop, string messageBottom, int healthHealed) PotionUse(int inventory, Pokemon user) {
 
-            string messageTop;
-            string messageBottom = "";
-            int healNumber = 20;
+            // Variable declaration
+            string messageTop; // Creates the top message. This will be assgined later.
+            string messageBottom = ""; // Creates the bottom message. This MAY be changed later but can remain blank.
+            int healNumber = 20; // Creates the healNumber and sets it equal to 20.
 
-            if (inventory > 0) {
-
+            // Checks if the user has at least 1 potion in their inventory.
+            if (inventory > 0) { // If so
+                
+                // messageTop is assigned to let the user know that their potion has been used.
                 messageTop = $"You used a potion on {user.name}";
 
-                if (user.health + 20 > user.originalHealth) {
+                // Checks if adding 20 to the user's health makes it greater than the original health
+                if (user.health + 20 > user.originalHealth) { // if so
                     
+                    // Sets the healNumber to the originalHealth of the user minus the user's current health.
                     healNumber =  user.originalHealth - user.health;
                 }
 
+                // Sets messageBottom to be a string saying how much health will be added to user.
                 messageBottom = $"Healed {healNumber} health to {user.name}";
             }
-            else {
+            else { // If NOT so
+
+                // Sets messageTop to a string letting the user know they cannot use any potions because they have none.
                 messageTop = "Unable to use potions. You have none";
             }
 
+            // Returns all variables declared at the beginning.
             return (messageTop, messageBottom, healNumber);
         }
         
+        /// <summary>
+        /// Calculates the odds of the playuer running away. Uses a very similar formula to the formula used in the first generation of pokemon
+        /// created by Game Freak Corporation via bulbapedia.net. Original formula can be found on https://bulbapedia.bulbagarden.net/wiki/Escape 
+        /// </summary>
+        /// <param name="p1"> The user's pokemon. </param>
+        /// <param name="p2"> The enemy pokemon. </param>
+        /// <returns> Returns an integer that will be compared to a randomly calculated integer to see if the suer ran away succeffully. </returns>
         public int CalculateRunAway(Pokemon p1, Pokemon p2) {
 
-            if (p2.speed / 4 % 256 == 0) {
-                return 256;
-            }
+            // Checks if enemy speed divided by 4 and the mod by 256 is equal to zero to avoid a dividing by zero error and returns 256
+            if (p2.speed / 4 % 256 == 0) {  return 256; }
 
+            // Calculates the odds to escape using the formula
             int oddsToEscape = (p1.speed * 32 / (p2.speed / 4 % 256)) + 30;
 
+            // Returns the oddsToEscape
             return oddsToEscape;
         }
 
+        /// <summary>
+        /// Uses the Graphics.DisplayMessageBox() method. See Graphics.DisplayMessageBox() for furthur documentation.
+        /// </summary>
+        /// <param name="topMessage"> This is the message that is to be displayed at the top. CAN BE NULL </param>
+        /// <param name="bottomMessage"> this is the message that is to be displayed at the bottom. CAN BE NULL </param>
         public void DisplayMessageBox(string? topMessage, string? bottomMessage) { graphics.DisplayMessageBox(topMessage, bottomMessage); }
-
+        /// <summary>
+        /// Uses the Graphics.DisplayBattleScreen() method. See Graphics.DisplayBattleScreen()
+        /// </summary>
+        /// <param name="user"> the user's pokemon </param>
+        /// <param name="enemy"> the enemy pokemon </param>
+        /// <param name="menuCase"> the case that displays the text box. BY DEFAULT IS -1 </param>
+        /// <param name="usedMove"> the used attack. BY DEFAULT IS NULL </param>
+        /// <param name="attackMissed"> is the attack miss or not. BY DEFAULT IS FALSE </param>
         public void DisplayBattleScreen(Pokemon user, Pokemon enemy, int menuCase = -1, Attack? usedMove = null, bool attackMissed = false) { graphics.DisplayBattleScreen(inventory, turnNum, user, enemy, menuCase, usedMove, attackMissed); }
-
-        public static void Main(string[] args) {
-
-            
-            Game g = new();
-            
-            while(true) {
-                g.RunGame();
-
-                Console.WriteLine("Play again?\n[1] Yes\n[2] No");
-                string? input = Console.ReadLine();
-
-                if (input == "1") {
-                    continue;
-                }
-                else if (input == "2") {
-                    break;
-                }
-                else { Console.WriteLine("Wrong character entered, exiting the program..."); break; }
-            }
-            
-        }
     }
 }
