@@ -1,15 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RjjvUUID620iMLIPFBgom14a2UbybiZ3BSHRG8PM7WDnyaMqI/MHzlLN86/l2wj59nMmfg1UsjyPmIyZI0m+yA==",
+  "dgSpecHash": "3/zIg31pS7rPWmKz2PVgLjC28eczXclW9Le1zleRvQnZ5FU//wdm9hUCW2Xyazod+BmjJbTRfGR4pE+g2q1kyw==",
   "success": true,
-  "projectFilePath": "c:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
+  "projectFilePath": "C:\\Users\\cheta\\C# Projects\\PokemonProject\\Pokemon Project\\Pokemon Project.csproj",
   "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file c:\\Users\\cheta\\C# Projects\\PokemonProject\\PokemonProject\\Pokemon Project\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }
