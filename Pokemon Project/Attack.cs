@@ -101,10 +101,10 @@ namespace PokemonProject {
                 // there is a slight damage increase.
                 double STAB = moveType.Equals(user.type) ? 1.5 : 1.0;
 
-                // Gets the effectiveness stat from the parent method CalculateTypeEffectiveness(). See it's documentation for explanation
+                // Gets the effectiveness stat from the parent method Attack.CalculateTypeEffectiveness(). See Attack.CalculateTypeEffectiveness() for furthur documentation
                 double typeEffectiveness = CalculateTypeEffectiveness(target).effectiveness;
 
-                // Sets damage to equal the value returned by the CalculateDamage() method within this class. See it's documentation for explanation
+                // Sets damage to equal the value returned by the PhysicalAttack.CalculateDamage() method. See PhysicalAttack.CalculateDamage() for furthur documentation
                 int damage = CalculateDamage(user, target, STAB, typeEffectiveness);
 
                 // Subtracts damage from the target pokemon's health
@@ -173,10 +173,10 @@ namespace PokemonProject {
                 // there is a slight damage increase.
                 double STAB = moveType.Equals(user.type) ? 1.5 : 1.0;
 
-                // Gets the effectiveness stat from the parent method CalculateTypeEffectiveness(). See it's documentation for explanation
+                // Gets the effectiveness stat from Attack.CalculateTypeEffectiveness(). See Attack.CalculateTypeEffectiveness() for furthur documentation
                 double typeEffectiveness = CalculateTypeEffectiveness(target).effectiveness;
 
-                // Sets damage to equal the value returned by the CalculateDamage() method within this class. See it's documentation for explanation
+                // Sets damage to equal the value returned by the SpecialAttack.CalculateDamage(). See SpecialAttack.CalculateDamage() for furthur documentation.
                 int damage = CalculateDamage(user, target, STAB, typeEffectiveness);
 
                 // Subtracts damage from the target pokemon's health

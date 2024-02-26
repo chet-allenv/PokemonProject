@@ -92,12 +92,12 @@ namespace PokemonProject {
                     
                     // 15 is the number of spaces that both {attackNumber1} and {attackNumber2} displace
                     // IF the first move of the pokemon is less than 15 characters in length, for every char of space, it adds to spaces1
-                    if (pokemon.moveSet[0].name.Length < 15) {
+                    if (pokemon.moveSet[0].name.Length < 16) {
                         for (int j = 0; j < 15 - pokemon.moveSet[0].name.Length; j++) { spaces1 += " "; }
                     }
 
                     // IF the second move of the pokemon is less than 15 characters in length, for every char of space, it adds to spaces2
-                    if (pokemon.moveSet[1].name.Length < 15) {
+                    if (pokemon.moveSet[1].name.Length < 16) {
                         for (int j = 0; j < 15 - pokemon.moveSet[1].name.Length; j++) { spaces2 += " "; }
                     }
 
@@ -235,88 +235,128 @@ namespace PokemonProject {
                     // Creates the spaces variable to keep track of the number of spaces that need to be added
                     string spaces = "";
                     
-                    // 10 SPACES IS THE LENGTH OF THE PLACEHOLDER
+                    // 10 SPACES IS THE LENGTH OF THE PLACEHOLDER. THE POKEMON'S NAME MUST BE 10 CHARACTERS OR LESS IN LENGTH
+                    // Checks if the name is within the scope of allowed lengths
                     if (enemy.name.Length < 11 ) { 
-                        for (int j = 0; j < 10 - enemy.name.Length; j++) { 
-                            spaces += " "; 
-                        }
 
+                        // Iterates through every character that is empty and adds a space to spaces
+                        for (int j = 0; j < 10 - enemy.name.Length; j++) { spaces += " "; }
+
+                        // Sets the placeholder to the enemy's name plus the amount of spaces.
                         line = battleSceneStringLines[i].Replace("{enemy.name}", enemy.name + spaces);
                     }
+                    // FOR DEBUGGING If a pokemon's name is too long it will show NameTooLng.
                     else { line = battleSceneStringLines[i].Replace("{enemy.name}", "NameTooLng"); }
                     
                 }
 
+                // If the current line has the placeholder {enemy.health} that means that the enemy pokemon's health bar is to be
+                // displayed there.
                 if (line.Contains("{enemy.health}")) { 
+                    
+                    // Variable declaration
+                    string spaces = ""; // Creates the spaces variable to keep track of the number of spaces that need to be added
+                    string healthToString = enemy.health > 0 ? enemy.health.ToString() : "0"; // Converts the number of remaining health to a string
 
-                    string spaces = "";
-                    string healthToString = enemy.health > 0 ? enemy.health.ToString() : "0";
+                    // MAXIMUM LENGTH OF healthToString IS 4 CHARACTERS LONG
+                    // Checks if healthToString is within the scope of allowed lengths 
+                    if (healthToString.Length < 5) {
 
-                    if (healthToString.Length < 4) {
-                        for (int j = 0; j < 4 - healthToString.Length; j++) {
-                            spaces += " ";
-                        }
+                        // Iterates through every character that is empty and adds a space to spaces
+                        for (int j = 0; j < 4 - healthToString.Length; j++) { spaces += " "; }
+
+                        // Sets the placeholder to the enemy's healthToString plus the amount of spaces.
+                        line = battleSceneStringLines[i].Replace("{enemy.health}", healthToString + spaces);
                     }
+                    // FOR DEBUGGING If a pokemon's healthToString is too long it will show LONG.
+                    else { line = battleSceneStringLines[i].Replace("{enemy.health}", "LONG");}
 
-                    line = battleSceneStringLines[i].Replace("{enemy.health}", healthToString + spaces);
+                    // Sets the placeholder for the enemy's health bar to its health bar by calling the Graphics.GetHealthBar() method. 
+                    // Check Graphics.GetHealthBar() method for furthur documentation
                     line = line.Replace("{Game.GetHealthBar(enemy)}", GetHealthBar(enemy));
 
                 }
 
+                // If the current line has the placeholder {user.name} that means that the user pokemon's name is to be
+                // displayed there.
                 if (line.Contains("{user.name}")) {
 
+                    // Creates the spaces variable to keep track of the number of spaces that need to be added
                     string spaces = "";
 
-                    if (user.name.Length < 10) {
-                        for (int j = 0; j < 10 - user.name.Length; j++) {
-                            spaces += " ";
-                        }
-                    }
-                    line = battleSceneStringLines[i].Replace("{user.name}", user.name + spaces);
+                    // 10 SPACES IS THE LENGTH OF THE PLACEHOLDER. THE POKEMON'S NAME MUST BE 10 CHARACTERS OR LESS IN LENGTH
+                    // Checks if the name is within the scope of allowed lengths
+                    if (user.name.Length < 11) {
 
+                        // Iterates through every character that is empty and adds a space to spaces
+                        for (int j = 0; j < 10 - user.name.Length; j++) { spaces += " "; }
+                        
+                        // Sets the placeholder to the user's name plus the amount of spaces.
+                        line = battleSceneStringLines[i].Replace("{user.name}", user.name + spaces);
+                    }
+                    // FOR DEBUGGING If a pokemon's name is too long it will show NameTooLng.
+                    else { line = battleSceneStringLines[i].Replace("{user.name}", "NameTooLng"); }
                 }
                 
+                // If the current line has the placeholder {user.health} that means that the user pokemon's health bar is to be
+                // displayed there.
                 if (line.Contains("{user.health}")) {
 
-                    string spaces = "";
-                    string healthToString = user.health > 0 ? user.health.ToString() : "0";
+                    // Variable declaration
+                    string spaces = ""; // Creates the spaces variable to keep track of the number of spaces that need to be added
+                    string healthToString = user.health > 0 ? user.health.ToString() : "0"; // Converts the number of remaining health to a string
 
-                    if (healthToString.Length < 4) {
-                        for (int j = 0; j < 4 - healthToString.Length; j++) {
-                            spaces += " ";
-                        }
+                    // MAXIMUM LENGTH OF healthToString IS 4 CHARACTERS LONG
+                    // Checks if healthToString is within the scope of allowed lengths 
+                    if (healthToString.Length < 5) {
+
+                        // Iterates through every character that is empty and adds a space to spaces
+                        for (int j = 0; j < 4 - healthToString.Length; j++) { spaces += " "; }
+
+                        // Sets the placeholder to the user's healthToString plus the amount of spaces.
+                        line = battleSceneStringLines[i].Replace("{user.health}", healthToString + spaces);
                     }
-                    line = battleSceneStringLines[i].Replace("{user.health}", healthToString + spaces);
-                    line = line.Replace("{Game.GetHealthBar(user)}", GetHealthBar(user));
+                    // FOR DEBUGGING If a pokemon's healthToString is too long it will show LONG.
+                    else { line = battleSceneStringLines[i].Replace("{user.health}", "LONG"); } 
 
+                    // Sets the placeholder for the user's health bar to its health bar by calling the Graphics.GetHealthBar() method. 
+                    // Check Graphics.GetHealthBar() method for furthur documentation
+                    line = line.Replace("{Game.GetHealthBar(user)}", GetHealthBar(user));
                 }
 
-                Console.WriteLine(line);
-
-                
+                Console.WriteLine(line);   
             }
-            if (menuCase == -1) {}
-            else if (menuCase == 0) { DisplayMenuBox(); }
-            else if (menuCase == 1) { DisplayAttackBox(user); }
-            else if (menuCase == 2 && usedMove != null) { 
 
-                string attackMessage = usedMove.GetAttackMessage(turnNum % 2 == 0 ? user : enemy);
-                string effectivenessMessage;
+            // CHECKING MENU CASES
 
+            if (menuCase == -1) {} // If menuCase is -1, nothing happens
+            else if (menuCase == 0) { DisplayMenuBox(); } // if menuCase is 0, Graphics.DisplayMenuBox() is called. See Graphics.DisplayMenuBox() for furthur documentation.
+            else if (menuCase == 1) { DisplayAttackBox(user); } // If menuCase is 1, Graphics.DisplayAttackBox() is called. See Graphics.DisplayAttackBox() for furthur documentation.
+            else if (menuCase == 2 && usedMove != null) {  // If menuCase is 2 and usedMove is NOT null
+
+                // Variable Declaration
+
+                // Sets attackMessage to the message that is returned from the Attack.GetAttackMessage() method. See Attack.GetAttackMessage() for furthur documentation
+                // Depending on the current turn number, it displays the attack message of the user or enemy.
+                string attackMessage = usedMove.GetAttackMessage(turnNum % 2 == 0 ? user : enemy); 
+                string effectivenessMessage; // String that will be assigned a value later in the code.
+
+                // CHECKS IF THE ATTACK MISSED
                 if (!attackMissed) {
+
+                    // Sets the effectiveness to the message that is returned from the Attack.CalculateTypeEffectiveness(). See Attack.CalculateTypeEffectiveness() for furthur documentation
+                    // Depending on the current turn number, it displays the attack message of the user or enemy.
                     effectivenessMessage = usedMove.CalculateTypeEffectiveness(turnNum % 2 == 0 ? enemy : user).message;
                 }
-                else {
-                    effectivenessMessage = "Attack Missed";
-                }
+                else { effectivenessMessage = "Attack Missed"; } // If the attack missed sets the message to say so.
 
+                // Calls the Graphics.DisplayMessageBox() method. See Graphics.DisplayMessageBox() for furthur documentation.
                 DisplayMessageBox(attackMessage, effectivenessMessage);
 
             }
-            else if (menuCase == 2 && usedMove == null) {
-                DisplayMessageBox(null, null);
-            }
-            else if (menuCase == 3 ) { DisplayBagScreen(inventory); }
+            // If menuCase is 2 and usedMove is null, a blank box is displayed via the Graphics.DisplayMessageBox() method. See Graphics.DisplayMessageBox() for furthur documentation.
+            else if (menuCase == 2 && usedMove == null) { DisplayMessageBox(null, null); } 
+            else if (menuCase == 3 ) { DisplayBagScreen(inventory); } // If menuCase is 3, Graphics.DisplayBagScreen() is called. See Graphics.DisplayBagScreen() for further documentation.
         }
     }
 }
