@@ -1,4 +1,11 @@
-
+/*
+*   This is the primary class that holds all of the game functions of this project. The main method
+* awithin this class is the RunGame() method. Within that method is the I/O between the program and
+* the user. It also uses the Graphics class to display the game screens to the user. At this point
+* in the development of this game, the user is only able to fight a very simple AI that randomly
+* generates numbers to pick an attack. I would like to expand upon this in further assignments and
+* make the AI smarter and able to pick stronger attacks.
+*/
 
 namespace PokemonProject {
 
@@ -378,7 +385,7 @@ namespace PokemonProject {
                 messageTop = $"You used a potion on {user.name}";
 
                 // Checks if adding 20 to the user's health makes it greater than the original health
-                if (user.health + 20 > user.originalHealth) { // if so
+                if (user.health + 20 >= user.originalHealth) { // if so
                     
                     // Sets the healNumber to the originalHealth of the user minus the user's current health.
                     healNumber =  user.originalHealth - user.health;

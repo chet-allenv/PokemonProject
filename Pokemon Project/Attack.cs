@@ -1,4 +1,13 @@
-
+/*
+*   This Class's function is to handle attacks. Attacks are how you will attack the enemy pokemon and how the 
+* enemy pokemon will attack you. There are two forms of attacks based on the type of the attack. These forms
+* are special and physical attacks. Each form of attack takes into account different stats in order to
+* calculate damage. The physical uses the pokemon's attack stat and special uses the pokemon's special stat.
+* Above the documentation for the PhysicalAttack and SpecialAttack classes is what types correspond to what 
+* attack form. Every attack will have power, accuracy, name, and a type. Attacks of a certain type will be
+* stronger or weaker compared to defending pokemon's type. For example, Fire is strong against Grass but is
+* also weak to Water.
+*/
 namespace PokemonProject {
 
     // Parent class that is the basis for the attacks in the game
