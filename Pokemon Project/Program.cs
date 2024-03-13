@@ -1,3 +1,20 @@
+/*
+*   This program's function is to be the main method of sorts for the project and run the game. It also
+* asks the user to play again once the game is over. I ran into a lot of issues while developing this
+* project. The first issue I ran into was type matchups. I didn't really have a good way of instantiating
+* the type matchups with out creating a new object instance everytime an attack was used. This then led to
+* the creation of A LOT of one time used classes. I got over this by only instantiating the class when
+* a new Attack class is created. This VASTLY reduced the ammount of one time use PokemonType classes there
+* were. As well as this, at first I tried to make types (Fire, Water, Grass, etc.) an instance of a class.
+* So there were several different classes for every type that made it difficult to actually compare types.
+* They also essentially only carried a predetermined string that I decided to eventually just replace with
+* a string. I also ran into LOADS of problems with loading text files. This is something I had very little
+* experience with. I wanted the text contained within a text file to change based on different variables.
+* I spent a few days trying to come up with how this would happen and I believe that I created a good UI.
+* My goals for the final are simply adding a UI and not making the gaem based in a terminal. I would also
+* like to create my own pokemon and be able to kinda add my own spin to the pokemon franchise. I dont want
+* to just copy what pokemon does, I want to make it my own.
+*/
 namespace PokemonProject {
     
     class Program {

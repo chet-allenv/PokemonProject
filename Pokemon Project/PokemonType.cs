@@ -1,4 +1,11 @@
-
+/*
+*   This creates the type matchups between the several different types. It does so by using Dictionaries
+* to store a List of strings that line up with a string key. When an attack is used, it checks both
+* the weakness and strength Dictionary and calculates whether or not an attack will do more damage to a
+* pokemon through weakness and strength calculations. I would like to add more types to create a more
+* more complex game that is more complex than the glorified rock paper scissors it is now. This will be
+* implemented in the next version of this program.
+*/
 namespace PokemonProject {
 
     // This class handles creating the type matchups for the game

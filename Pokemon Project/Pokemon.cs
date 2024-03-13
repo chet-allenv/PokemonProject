@@ -1,4 +1,12 @@
-﻿
+﻿/*
+*   This class handles the creation of Pokemon. Every pokemon has seven attributes that makes
+* a certain pokemon be the kind it is. It contains a method to check if the pokemon is alive,
+* or that their health IS NOT zero. It can also generatestats for the pokemon so there is not
+* as much input needed to create a pokemon with randomly generated stats. I would, however,
+* like to change the way stats are calculated, for example, I would like a charmander to have
+* a stronger attack stat than a bulbasaur but a weaker speed stat. This will be implemented
+* in the next iteration of this project.
+*/
 namespace PokemonProject {
 
     /// <summary>

@@ -1,3 +1,14 @@
+/*
+*   This class handles reading and using the text files to display game screens to the user. There are
+* five different text files that are all to be read by this class. Every text file serves a different
+* purpose. Four of the five are a variation of the text box at the bottom of the screen and allows for
+* the reader to read some essential information, like an attack being used, what keys to enter, etc.
+* The fifth file is named BattleScene.txt and that shows the names and health bars of the enemy and
+* user's pokemon as well as little images of a creature to give a visual idea of where the pokemon are.
+* This class is used by the Game.cs class and holds all functions needed to give information to the
+* user.
+*/
+
 namespace PokemonProject {
     
     /// <summary>
